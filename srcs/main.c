@@ -23,74 +23,81 @@ size_t	count_words(t_token *token)
 }
 
 // TODO: add support for parenthesis
-int	ex_next_cmd(int fdin)
+int	ex_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 {
 	t_cmd	cmd;
-	int		pid;
-	t_token	*token;
+	int	pid;
 	size_t	arg_i;
-	// char	*line;
-
-	token = g_minishell.token;
-	cmd.arg_len = count_words(token);
-	if (pipe(cmd.fds))
+	
+	if (token == NULL)
 		return (1);
+	cmd.arg_len = count_words(token);
 	cmd.args = malloc(sizeof(char *) * (cmd.arg_len + 1));
+	if (pipe(cmd.fds))
+		return (2);
 	if (cmd.args == NULL)
 		return (MALLOC_ERROR);
 	arg_i = 0;
 	while (token && (token->type != PIPE))
 	{
 		if (token->type == WORD)
-		{
 			cmd.args[arg_i++] = token->value;
-		}
-		// else
-		// {
-		// 	if (token->type == S_REDIR_OUT)
-		// 	{
-		// 		;
-		// 	}
-		// 	else if (token->type == D_REDIR_OUT)
-		// 	{
-		// 		;
-		// 	}
-		// 	else if (token->type == S_REDIR_IN)
-		// 	{
-		// 		;
-		// 	}
-		// 	else if (token->type == D_REDIR_IN)
-		// 	{
-		// 		;
-		// 	}
-		// }
 		token = token->next;
 	}
 	cmd.args[arg_i] = NULL;
 	// TODO if << read from stdin and redirect to pipe stdin process
-	// fork()
 	pid = fork();
 	if (pid == 0)
 	{
 		// child
-		// close(cmd.fds[1]);
-		// dup2(cmd.fds[0], STDIN_FILENO);
-		// close(cmd.fds[0]);
+		// attach stdin to start of pipe (if fdin != 0)
+		if (pipereadfd != 0)
+		{
+			// printf("edit piperead %d\n", depth);
+			dup2(pipereadfd, STDIN_FILENO);
+			close(pipereadfd);
+		}
+		// attach stdout to end of pipe (if token != NULL)
+		if (token != NULL)
+		{
+			// printf("edit stdout %d\n", depth);
+			dup2(cmd.fds[1], STDOUT_FILENO);
+			close(cmd.fds[1]);
+		}
 		execve(cmd.args[0], cmd.args, NULL);
 	}
-	(void)fdin;
-	// close(cmd.fds[0]);
-	// dup2(cmd.fds[1], fdin);
-	return (pid);
-	// recursive call ex_next_cmd
+	// close(pipereadfd);
+	// parent
+	pids[depth] = pid;
+	if (token == NULL)
+		return (0);
+	return (ex_next_cmd(token->next, cmd.fds[0], pids, depth + 1));
 }
 
 int	ex_cmds(void)
 {
-	int	pid;
+	int	pids[10] = {0};
+	t_token	*token;
+	int	err;
+	int	i;
 
-	pid = ex_next_cmd(STDIN_FILENO);
-	waitpid(pid, NULL, 0);
+	token = g_minishell.token;
+	err = ex_next_cmd(token, 0, pids, 0);
+	if (err != 0)
+	{
+		perror("pipe error:");
+		printf("error ! Oo %d\n", err);
+	}
+	i = 0;
+	while (i < 2)
+	{
+		printf("wait %d\n", i);
+		wait(NULL);
+		++i;
+	}
+	printf("end of it\n");
+	// while ((i < 10) && pids[i] != 0)
+	//	wait(pids[i++]);
 	return (0);
 }
 
