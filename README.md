@@ -2,7 +2,7 @@
 
 Usage
 ```bash
-./minishell "<cmd"
+./minishell "<cmd>"
 ```
 
 Example
