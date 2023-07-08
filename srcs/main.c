@@ -22,23 +22,49 @@ size_t	count_words(t_token *token)
 	return (c);
 }
 
-int	readdoc(int fd, t_token *token)
+int	pipefrom(int fdfrom, int fdto, t_token *token)
 {
-	static	buf[4096];
-	ssize_t	ret;
+	ssize_t		ret;
 	
 	if (token->type != WORD)
 		return (1);
-	ret = read(STDIN_FILENO, buf, 4096);
+	ret = read(fdfrom, g_minishell.buf, BUF_SIZE);
 	while (ret != 0)
 	{
-		if (ret == 0)
-			return ();
 		if (ret < 0)
 			return (ret);
-		write(fd, buf, ret);
-		ret = read(STDIN_FILENO, buf, 4096);
+		write(fdto, g_minishell.buf, ret);
+		ret = read(fdfrom, g_minishell.buf, BUF_SIZE);
 	}
+	return (0);
+}
+
+int	writefrom(int writefd, char *filename, int redirtype)
+{
+	int	fd;
+	int	opt;
+	ssize_t	ret;
+
+	opt = O_CREAT | O_WRONLY;
+	if (redirtype == D_REDIR_OUT)
+		opt |= O_APPEND;
+	fd = open(filename, opt, 0644);
+	if (fd == -1)
+	{
+		perror("open:");
+	}
+	ret = read(writefd, g_minishell.buf, BUF_SIZE);
+	while (ret != 0)
+	{
+		if (ret < 0)
+		{
+			close(fd);
+			return (ret);
+		}
+		write(fd, g_minishell.buf, ret);
+		ret = read(writefd, g_minishell.buf, BUF_SIZE);
+	}
+	close(fd);
 	return (0);
 }
 
@@ -46,7 +72,10 @@ int	readdoc(int fd, t_token *token)
 int	ex_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 {
 	t_cmd	cmd;
+	int	pipein[2] = {0};
 	int	pid;
+	int	redir_type = 0;
+	char	*redir_file;
 	size_t	arg_i;
 	
 	if (token == NULL)
@@ -62,8 +91,27 @@ int	ex_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 	{
 		if (token->type == WORD)
 			cmd.args[arg_i++] = token->value;
-		else if (token->type == D_REDIR_OUT)
-			readdoc(cmd.fds[1], token->next);
+		else if ((token->type == D_REDIR_OUT) || (token->type == S_REDIR_OUT))
+		{
+			redir_type = token->type;
+			token = token->next;
+			redir_file = token->value;
+		}
+		else if (token->type == D_REDIR_IN)
+		{
+			pipe(pipein);
+			pipefrom(STDIN_FILENO, pipein[1], token->next);
+			token = token->next;
+		}
+		else if (token->type == S_REDIR_IN)
+		{
+			pipe(pipein);
+			int	filed;
+			filed = open(token->next->value, O_RDONLY);
+			pipefrom(filed, pipein[1], token->next);
+			token = token->next;
+			close(filed);
+		}
 		token = token->next;
 	}
 	cmd.args[arg_i] = NULL;
@@ -73,22 +121,42 @@ int	ex_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 	{
 		// child
 		// attach stdin to start of pipe (if fdin != 0)
-		if (pipereadfd != -1)
+		if (pipein[0] != 0)
+		{
+			close(pipein[1]);
+			dup2(pipein[0], STDIN_FILENO);
+			close(pipein[0]);
+			if (pipereadfd != -1)
+				close(pipereadfd);
+		}
+		else if (pipereadfd != -1)
 		{
 			dup2(pipereadfd, STDIN_FILENO);
 			close(pipereadfd);
 		}
 		// attach stdout to end of pipe (if token != NULL)
-		if (token != NULL)
+		if ((token != NULL) || (redir_type != 0))
 		{
 			close(cmd.fds[0]);
 			dup2(cmd.fds[1], STDOUT_FILENO);
+			close(cmd.fds[1]);
 		}
 		execve(cmd.args[0], cmd.args, NULL);
 	}
 	close(cmd.fds[1]); // close write end of next pipe
+	if (pipein[0])
+	{
+		close(pipein[0]);
+		close(pipein[1]);
+	}
 	if (pipereadfd != -1)
 		close(pipereadfd); // close read end of prec pipe
+	if (redir_type != 0)
+	{
+		writefrom(cmd.fds[0], redir_file, redir_type);
+		close(cmd.fds[0]);
+		cmd.fds[0] = -1;
+	}
 	// parent
 	pids[depth] = pid;
 	if (token == NULL)

@@ -1,6 +1,0 @@
-total 16K
--rw-r--r-- 1 gmallet 2023_le-havre  247 Jul  8 12:18 bobo
-drwxr-xr-x 2 gmallet 2023_le-havre  268 Jul  8 12:01 lexer
--rw-r--r-- 1 gmallet 2023_le-havre 2.0K Jul  8 12:08 main.c
--rw-r--r-- 1 gmallet 2023_le-havre 4.1K Jul  8 12:01 main.o
--rw-r--r-- 1 gmallet 2023_le-havre    0 Jul  8 12:23 test
