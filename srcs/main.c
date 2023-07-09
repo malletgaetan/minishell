@@ -181,20 +181,44 @@ int	ex_cmds(void)
 	return (0);
 }
 
+/* static void	handle_error(int err, t_token *token) */
+/* { */
+/* 	if (err == SYNTAX_ERROR) */
+/* 	{ */
+/* 		ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO); */
+/* 		ft_putstr_fd(token->value, STDERR_FILENO); */
+/* 		ft_putstr_fd("'\n", STDERR_FILENO); */
+/* 	} */
+/* 	else if (err == QUOTE_ERROR) */
+/* 	{ */
+/* 		ft_putstr_fd("minishell: quotes don't guard\n", STDERR_FILENO); */
+/* 	} */
+/* 	else */
+/* 	{ */
+/* 		ft_putstr_fd("minishell: unexpected error\n", STDERR_FILENO); */
+/* 	} */
+/* } */
+
 int	main(int argc, char **argv)
 {
 	int	err;
+	t_token	*token;
 
 	if (argc == 1)
 		return (0);
-	if ((err = lex(argv[1])))
+	if ((err = lex(argv[1], &(g_minishell.token), &(g_minishell.bad_token), g_minishell.old_status)))
 	{
 		printf("got err: %d while lexing\n", err);
-		return (1);
 	}
-	if (ex_cmds())
+	token = g_minishell.token;
+	while (token != NULL)
 	{
-		printf("got error while executing cmds\n");
+		printf("token of type %d and value %s\n", token->type, token->value);
+		token = token->next;
 	}
+	/* if (ex_cmds()) */
+	/* { */
+	/* 	printf("got error while executing cmds\n"); */
+	/* } */
 	return (0);
 }

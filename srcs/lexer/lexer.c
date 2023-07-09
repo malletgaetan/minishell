@@ -1,60 +1,50 @@
 #include "minishell.h"
 
-// lexer can return (quote error | malloc error | syntax error)
-// syntax error only occur on unknown token
+// lexer check for all syntax errors
 // lexer set a stream of token in minishell global
 // lexer does expansion
 
-static void	free_token(t_token *token)
+/* static void	free_token(t_token *token) */
+/* { */
+/* 	t_token	*next; */
+
+/* 	while (token != NULL) */
+/* 	{ */
+/* 		next = token->next; */
+/* 		free(token); */
+/* 		token = next; */
+/* 	} */
+/* } */
+
+int	lex(char *line, t_token **token, t_token **bad_token, int old_status)
 {
-	t_token	*next;
+	int		last_type;
+	int		err;
 
-	while (token != NULL)
-	{
-		next = token->next;
-		free(token);
-		token = next;
-	}
-}
-
-static void	handle_error(int err, t_token *token)
-{
-	if (err == SYNTAX_ERROR)
-	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO);
-		ft_putstr_fd(token->value, STDERR_FILENO);
-		ft_putstr_fd("'\n", STDERR_FILENO);
-	}
-	else if (err == QUOTE_ERROR)
-	{
-		ft_putstr_fd("minishell: quotes don't guard\n", STDERR_FILENO);
-	}
-	else
-	{
-		ft_putstr_fd("minishell: unexpected error\n", STDERR_FILENO);
-	}
-}
-
-int	lex(char *line)
-{
-	int			err;
-	t_token		**token;
-
-	token = &(g_minishell.token);
+	ft_skipspaces(&line);
+	if (*line == '|')
+		return (set_bad_token(&line, bad_token));
+	last_type = WORD;
 	while (*line)
 	{
 		ft_skipspaces(&line);
 		if (ft_isoperator(*line))
-			err = set_operator_token(&line, token);
-		else
-			err = set_word_token(&line, token);
-		if (err)
 		{
-			free_token(g_minishell.token);
-			handle_error(err, *token);
-			return (err);
+			if (last_type != WORD)
+				err = set_bad_token(&line, bad_token);
+			else
+				err = set_operator_token(&line, token);
 		}
+		else
+		{
+			err = set_word_token(&line, token, old_status);
+		}
+		if (err != 0)
+			return (err);
+		last_type = (*token)->type;
 		token = &((*token)->next);
 	}
+	if (last_type != WORD)
+		return (set_bad_token(&line, bad_token));
 	return (0);
 }

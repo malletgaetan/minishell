@@ -1,9 +1,11 @@
 NAME = minishell
 CC = gcc
 SRCSDIR = ./srcs/
-HEADERSDIR = .
+HEADERSDIR = includes/
 CFLAGS = -Wall -Werror -Wextra -I $(HEADERSDIR)
-AR = ar rcs
+LIBFTDIR = libft/
+LIBFT = libft.a
+LIBFTFLAGS = -L $(LIBFTDIR) -l ft
 RM = rm -f
 
 SRCS=$(shell find $(SRCSDIR) -name '*.c')
@@ -11,14 +13,17 @@ OBJS=$(SRCS:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
+$(LIBFTDIR)/$(LIBFT):
+	make -C $(LIBFTDIR)
+
+$(NAME): $(SRCS) $(LIBFTDIR)/$(LIBFT)
+	$(CC) $(CFLAGS) $(SRCS) -o $(NAME) $(LIBFTFLAGS)
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(NAME)
 
 fclean: clean
-	$(RM) $(NAME)
+	make -C $(LIBFTDIR) fclean
 
 re: fclean all
 

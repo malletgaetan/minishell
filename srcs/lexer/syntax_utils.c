@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "lexer.h"
 
 int	ft_isspace(char c)
 {
@@ -13,16 +13,6 @@ int	ft_isoperator(char c)
 int	ft_isquote(char c)
 {
 	return ((c == '\'') || (c == '\"'));
-}
-
-int	ft_isdigit(char c)
-{
-	return ((c >= '0') && (c <= '9'));
-}
-
-int	ft_isalpha(char c)
-{
-	return (((c >= 'a') && (c <= 'z')) || ((c >= 'A') && (c <= 'Z')));
 }
 
 int	ft_isenv(char c)
