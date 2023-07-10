@@ -133,7 +133,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 		return (OS_ERROR);
 	if (cmd.redirout_type != 0)
 	{
-		pipe_to_file(cmd.pipeout[0], cmd.redirout_file, cmd.redirout_type); // TODO check error
+		pipe_to_file(cmd.pipeout[0], cmd.redirout_file, cmd.redirout_type); // TODO check error ?? if error sigkill forked process? open file before fork process?
 		close(cmd.pipeout[0]);
 		cmd.pipeout[0] = 0;
 	}
