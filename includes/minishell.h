@@ -42,6 +42,10 @@ typedef struct s_cmd
 
 extern t_minishell	g_minishell;
 
+int	fd_manual_pipe(int fdfrom, int fdto, char *delim);
+int	pipe_to_file(int fdfrom, char *fileto, int redirtype);
+int	file_to_pipe(char *filefrom, int fdto);
+int	file_to_pipe(char *filefrom, int fdto);
 int	exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth);
 int	ex_cmds(void);
 

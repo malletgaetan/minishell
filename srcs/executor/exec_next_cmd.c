@@ -20,54 +20,9 @@ static size_t	count_words(t_token *token)
 	return (c);
 }
 
-static int	pipefrom(int fdfrom, int fdto, t_token *token)
-{
-	ssize_t		ret;
-	
-	if (token->type != WORD)
-		return (1);
-	ret = read(fdfrom, g_minishell.buf, BUF_SIZE);
-	while (ret != 0)
-	{
-		if (ret < 0)
-			return (ret);
-		write(fdto, g_minishell.buf, ret);
-		ret = read(fdfrom, g_minishell.buf, BUF_SIZE);
-	}
-	return (0);
-}
-
-static int	writefrom(int writefd, char *filename, int redirtype)
-{
-	int	fd;
-	int	opt;
-	ssize_t	ret;
-
-	opt = O_CREAT | O_WRONLY;
-	if (redirtype == D_REDIR_OUT)
-		opt |= O_APPEND;
-	fd = open(filename, opt, 0644);
-	if (fd == -1)
-		perror("open:");
-	ret = read(writefd, g_minishell.buf, BUF_SIZE);
-	while (ret != 0)
-	{
-		if (ret < 0)
-		{
-			close(fd);
-			return (ret);
-		}
-		write(fd, g_minishell.buf, ret);
-		ret = read(writefd, g_minishell.buf, BUF_SIZE);
-	}
-	close(fd);
-	return (0);
-}
-
 static int	setup_cmd(t_cmd *cmd, t_token **token)
 {
 	size_t	arg_i;
-	int		fd;
 
 	cmd->arg_len = count_words(*token);
 	cmd->args = malloc(sizeof(char *) * (cmd->arg_len + 1));
@@ -92,16 +47,14 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 		else if ((*token)->type == D_REDIR_IN)
 		{
 			pipe(cmd->pipein);
-			pipefrom(STDIN_FILENO, cmd->pipein[1], (*token)->next);
+			fd_manual_pipe(STDIN_FILENO, cmd->pipein[1], (*token)->next->value);
 			(*token) = (*token)->next;
 		}
 		else if ((*token)->type == S_REDIR_IN)
 		{
 			pipe(cmd->pipein);
-			fd = open((*token)->next->value, O_RDONLY);
-			pipefrom(fd, cmd->pipein[1], (*token)->next);
 			(*token) = (*token)->next;
-			close(fd);
+			file_to_pipe((*token)->value, cmd->pipein[1]); // TODO check error
 		}
 		(*token) = (*token)->next;
 	}
@@ -152,7 +105,7 @@ static int	unsetup_child_pipes(t_cmd *cmd, int pipereadfd)
 		if (close(cmd->pipein[0]) || close(cmd->pipein[1]))
 			return (OS_ERROR);
 	}
-	if (pipereadfd != -1)  // close read end of prec pipe
+	if (pipereadfd != 0)  // close read end of prec pipe
 	{
 		if (close(pipereadfd))
 			return (OS_ERROR);
@@ -167,11 +120,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 	
 	if (token == NULL)
 		return (0);
-	cmd.pipein[0] = 0;
-	cmd.pipein[1] = 0;
-	cmd.pipeout[0] = 0;
-	cmd.pipeout[1] = 0;
-	cmd.redirout_type = 0;
+	ft_memset(&cmd, 0, sizeof(t_cmd));
 	setup_cmd(&cmd, &token);
 	pid = fork();
 	if (pid == 0)
@@ -185,9 +134,9 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 		return (OS_ERROR);
 	if (cmd.redirout_type != 0)
 	{
-		writefrom(cmd.pipeout[0], cmd.redirout_file, cmd.redirout_type);
+		pipe_to_file(cmd.pipeout[0], cmd.redirout_file, cmd.redirout_type); // TODO check error
 		close(cmd.pipeout[0]);
-		cmd.pipeout[0] = -1;
+		cmd.pipeout[0] = 0;
 	}
 	pids[depth] = pid;
 	if (token == NULL)

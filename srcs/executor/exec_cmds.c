@@ -8,7 +8,7 @@ int	ex_cmds(void)
 	int	i;
 
 	token = g_minishell.token;
-	err = exec_next_cmd(token, -1, pids, 0);
+	err = exec_next_cmd(token, 0, pids, 0);
 	if (err != 0)
 		perror("pipe error:");
 	i = 0;
