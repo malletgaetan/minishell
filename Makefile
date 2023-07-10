@@ -27,6 +27,7 @@ $(NAME): $(SRCS) $(LIBFTDIR)/$(LIBFT) $(FTPRINTFDIR)/$(FTPRINTF)
 
 clean:
 	$(RM) $(NAME)
+	$(RM) **/*.o
 
 fclean: clean
 	make -C $(LIBFTDIR) fclean
