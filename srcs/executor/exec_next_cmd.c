@@ -75,7 +75,7 @@ static int	setup_child_pipes(t_cmd *cmd, int is_last_cmd, int pipereadfd)
 		if (pipereadfd != -1 && close(pipereadfd))
 			return (OS_ERROR);
 	}
-	else if (pipereadfd != -1)
+	else if (pipereadfd != 0)
 	{
 		if (dup2(pipereadfd, STDIN_FILENO) == -1)
 			return (OS_ERROR);
@@ -94,7 +94,6 @@ static int	setup_child_pipes(t_cmd *cmd, int is_last_cmd, int pipereadfd)
 	}
 	return (0);
 }
-
 
 static int	unsetup_child_pipes(t_cmd *cmd, int pipereadfd)
 {

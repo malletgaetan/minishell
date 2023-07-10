@@ -2,6 +2,9 @@
 
 Usage
 ```bash
+# interactive mode
+./minishell
+# simple mode
 ./minishell "<cmd>"
 ```
 

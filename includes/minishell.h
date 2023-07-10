@@ -42,6 +42,10 @@ typedef struct s_cmd
 
 extern t_minishell	g_minishell;
 
+void	handle_lexer_error(int err);
+void	handle_executor_error(int err);
+
+// TODO create exector.h ? 
 int	fd_manual_pipe(int fdfrom, int fdto, char *delim);
 int	pipe_to_file(int fdfrom, char *fileto, int redirtype);
 int	file_to_pipe(char *filefrom, int fdto);
