@@ -46,5 +46,5 @@ int	lex(char *line, t_token **token, t_token **bad_token, int old_status)
 	}
 	if (last_type != WORD)
 		return (set_bad_token(&line, bad_token));
-	return (0);
+	return (LEXER_OK);
 }

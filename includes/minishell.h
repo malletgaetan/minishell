@@ -3,8 +3,7 @@
 
 # define BUF_SIZE 4096
 # define MALLOC_ERROR 1
-# define QUOTE_ERROR 2
-# define SYNTAX_ERROR 3
+# define PIPE_ERROR 2
 
 # include <fcntl.h>
 # include <sys/stat.h>
@@ -15,9 +14,13 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "lexer.h"
+# include "libft.h"
+# include "ft_printf.h"
 
-// TODO DONT FORGET TO DELETE THIS
-# include <stdio.h>
+enum e_error
+{
+	OS_ERROR,
+};
 
 typedef struct s_minishell
 {
@@ -29,11 +32,17 @@ typedef struct s_minishell
 
 typedef struct s_cmd
 {
-	size_t	arg_len;
 	char	**args;
-	int		fds[2];
+	size_t	arg_len;
+	int		pipeout[2];
+	int		pipein[2];
+	int		redirout_type;
+	char	*redirout_file;
 }	t_cmd;
 
 extern t_minishell	g_minishell;
+
+int	exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth);
+int	ex_cmds(void);
 
 #endif

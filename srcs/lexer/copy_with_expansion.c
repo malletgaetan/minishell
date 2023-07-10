@@ -11,7 +11,7 @@ static int	cpy_squote(char **line, char **word)
 		*(++(*word)) = *(++(*line));
 	}
 	++(*line);
-	return (0);
+	return (LEXER_OK);
 }
 
 static unsigned int	atoi_buf(char *str, unsigned int old_status)
@@ -84,5 +84,5 @@ int	copy_with_expansion(char **line, char *word, int old_status)
 	*word = '\0';
 	if (in_dquote)
 		return (LEXER_QUOTE_ERROR);
-	return (0);
+	return (LEXER_OK);
 }

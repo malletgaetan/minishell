@@ -4,8 +4,9 @@
 # include <stdlib.h>
 # include "libft.h"
 
-enum e_error
+enum e_lexer_error
 {
+	LEXER_OK,
 	LEXER_MALLOC_ERROR,
 	LEXER_SYNTAX_ERROR,
 	LEXER_QUOTE_ERROR,

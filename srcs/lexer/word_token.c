@@ -46,7 +46,7 @@ static size_t	get_expanded_size(char *line, int old_status)
 			size += get_single_quote_len(&line);
 			continue ;
 		}
-		if (*line == '$')
+		if (*line == '$' && ft_isenv(*(line + 1)))
 		{
 			size += get_env_size(&line, old_status);
 			continue ;
