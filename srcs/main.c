@@ -2,6 +2,7 @@
 
 t_minishell	g_minishell;
 
+
 static void	free_tokens(void)
 {
 	t_token	*token;
@@ -15,7 +16,17 @@ static void	free_tokens(void)
 	g_minishell.token = NULL;
 }
 
-int	interpret(char *line)
+void	handle_lexer_error(int err)
+{
+	if (err == LEXER_MALLOC_ERROR)
+		ft_printf("minishell: unexpected error\n");
+	else if (err == LEXER_SYNTAX_ERROR)
+		ft_printf("minishell: syntax errror near unexpected token `%s'\n", g_minishell.bad_token->value);
+	else if (err == LEXER_QUOTE_ERROR)
+		ft_printf("minishell: quotes doesn't guard\n");
+}
+
+static int	interpret(char *line)
 {
 	int	err;
 
@@ -31,7 +42,7 @@ int	interpret(char *line)
 	return (0);
 }
 
-int	interpret_loop(void)
+static int	interpret_loop(void)
 {
 	char	*line;
 	int	err;
@@ -47,11 +58,10 @@ int	interpret_loop(void)
 			handle_lexer_error(err);
 			free_tokens();
 			free(line);
+			g_minishell.old_status = err; // TODO  verify this has the correct err numbers
 			continue ;
 		}
-		err = ex_cmds();
-		if (err != 0) // create EXECUTOR_OK and EXECUTOR_ERRORS...
-			handle_executor_error(err);
+		g_minishell.old_status = ex_cmds();
 		free_tokens();
 		free(line);
 	}
