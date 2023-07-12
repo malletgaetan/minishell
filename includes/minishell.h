@@ -92,6 +92,8 @@ typedef struct s_cmd
 extern t_minishell	g_minishell;
 
 // TODO create exector.h
+int		close_zero(int *fd);
+size_t	get_nb_args(t_token *token);
 int		fd_manual_pipe(int fdfrom, int fdto, char *delim);
 int		pipe_to_file(int fdfrom, char *fileto, int redirtype);
 int		file_to_pipe(char *filefrom, int fdto);

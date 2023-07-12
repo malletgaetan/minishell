@@ -11,14 +11,14 @@ int	fd_manual_pipe(int fdfrom, int fdto, char *delim)
 			return (HARDFAIL_ERROR);
 		if (delim != NULL)
 		{
-			if (ft_strncmp(g_minishell.buf, delim, (size_t)ret))
-				return (0);
+			if (!ft_strncmp(g_minishell.buf, delim, (size_t)ret - 1))
+				return (OK);
 		}
 		if (write(fdto, g_minishell.buf, ret) == -1)
 			return (HARDFAIL_ERROR);
 		ret = read(fdfrom, g_minishell.buf, BUF_SIZE);
 	}
-	return (0);
+	return (OK);
 }
 
 int	pipe_to_file(int fdfrom, char *fileto, int redirtype)
@@ -30,7 +30,7 @@ int	pipe_to_file(int fdfrom, char *fileto, int redirtype)
 	flags = O_CREAT | O_WRONLY;
 	if (redirtype == D_REDIR_OUT)
 		flags |= O_APPEND;
-	fd = open(fileto, flags);
+	fd = open(fileto, flags, 0666);
 	if (fd == -1)
 	{
 		if (errno == EACCES)
@@ -38,7 +38,8 @@ int	pipe_to_file(int fdfrom, char *fileto, int redirtype)
 		return (HARDFAIL_ERROR);
 	}
 	err = fd_manual_pipe(fdfrom, fd, NULL);
-	close(fd);
+	if (close(fd))
+		return (HARDFAIL_ERROR);
 	return (err);
 }
 
@@ -57,6 +58,7 @@ int	file_to_pipe(char *filefrom, int fdto)
 		return (HARDFAIL_ERROR);
 	}
 	err = fd_manual_pipe(fd, fdto, NULL);
-	close(fd);
+	if (close(fd))
+		return (HARDFAIL_ERROR);
 	return (err);
 }

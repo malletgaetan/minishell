@@ -43,7 +43,7 @@ static int	cpy_env(char *env, char **word)
 		return (1);
 	while (*env)
 		*((*word)++) = *(env++);
-	return (0);
+	return (OK);
 }
 
 int	copy_with_expansion(char **line, char *word, int old_status)

@@ -69,7 +69,7 @@ static int	interpret_loop(void)
 			return (1);
 		}
 	}
-	return (0);
+	return (OK);
 }
 
 int	main(int argc, char **argv)
