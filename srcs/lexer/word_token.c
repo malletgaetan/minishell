@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "minishell.h"
 
 // TODO update it with new env variable array system
 
@@ -65,7 +65,7 @@ int	set_word_token(char **line, t_token **token, int old_status)
 	size_t	word_size;
 
 	word_size = get_expanded_size(*line, old_status);
-	(*token) = malloc(sizeof(t_token) + (sizeof(char) * (word_size + 1)));
+	(*token) = gc_malloc(&(g_minishell.gcan), sizeof(t_token) + (sizeof(char) * (word_size + 1)));
 	(*token)->next = NULL;
 	(*token)->type = WORD;
 	if ((*token) == NULL)

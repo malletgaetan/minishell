@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "minishell.h"
 
 static size_t	get_token_size(char *line)
 {
@@ -12,7 +12,7 @@ static size_t	get_token_size(char *line)
 
 static int	set_newline_token(t_token **token)
 {
-	(*token) = malloc(sizeof(t_token) + (8 * sizeof(char)));
+	(*token) = gc_malloc(&(g_minishell.gcan), sizeof(t_token) + (8 * sizeof(char)));
 	if ((*token) == NULL)
 		return (LEXER_MALLOC_ERROR);
 	(*token)->type = BAD;
@@ -34,10 +34,11 @@ int	set_bad_token(char **line, t_token **token)
 	size_t	tokensize;
 	char	*ptr;
 
+
 	tokensize = get_token_size(*line);
 	if (tokensize == 0)
 		return (set_newline_token(token));
-	(*token) = malloc(sizeof(t_token) + (sizeof(char) * (tokensize + 1)));
+	(*token) = gc_malloc(&(g_minishell.gcan), sizeof(t_token) + (sizeof(char) * (tokensize + 1)));
 	if ((*token) == NULL)
 		return (LEXER_MALLOC_ERROR);
 	(*token)->type = BAD;

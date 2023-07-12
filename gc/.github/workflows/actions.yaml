@@ -1,0 +1,29 @@
+name: GC TESTS
+run-name: GC TESTS
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: compile library
+        run: |
+          make -C ${{ github.workspace }}
+      - name: compile test binary
+        run: |
+          make -C ${{ github.workspace }} test
+      - name: basics tests
+        run: |
+          ./test
+      - name: setup valgrind
+        run: |
+          sudo apt install -y valgrind
+      - name: memory leaks tests
+        run: |
+          valgrind --leak-check=full ./test

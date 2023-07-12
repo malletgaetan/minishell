@@ -3,17 +3,12 @@
 t_minishell	g_minishell;
 
 
-static void	free_tokens(void)
+static void	init_minishell(void)
 {
-	t_token	*token;
-
-	while (g_minishell.token != NULL)
-	{
-		token = g_minishell.token->next;
-		free(g_minishell.token);
-		g_minishell.token = token;
-	}
+	g_minishell.bad_token = NULL;
 	g_minishell.token = NULL;
+	g_minishell.old_status = 0;
+	gc_init(&(g_minishell.gcan));
 }
 
 void	handle_lexer_error(int err)
@@ -30,15 +25,20 @@ static int	interpret(char *line)
 {
 	int	err;
 
-	if ((err = lex(line, &(g_minishell.token), &(g_minishell.bad_token), g_minishell.old_status)))
+	err = lex(line, &(g_minishell.token), &(g_minishell.bad_token), g_minishell.old_status);
+	if (err != LEXER_OK)
 	{
 		handle_lexer_error(err);
-		free_tokens();
+		gc_clean(&(g_minishell.gcan));
 		return (2);
 	}
-	if ((err = ex_cmds()))
-		handle_executor_error(err);
-	free_tokens();
+	err = ex_cmds();
+	gc_clean(&(g_minishell.gcan));
+	if (err != OK)
+	{
+		ft_printf("minishell: hardfail error: %s\n", strerror(errno));
+		return (1);
+	}
 	return (0);
 }
 
@@ -56,14 +56,18 @@ static int	interpret_loop(void)
 		if (err != LEXER_OK)
 		{
 			handle_lexer_error(err);
-			free_tokens();
+			gc_clean(&(g_minishell.gcan));
 			free(line);
-			g_minishell.old_status = err; // TODO  verify this has the correct err numbers
 			continue ;
 		}
-		g_minishell.old_status = ex_cmds();
-		free_tokens();
 		free(line);
+		err = ex_cmds(); 
+		gc_clean(&(g_minishell.gcan));
+		if (err != OK)
+		{
+			ft_printf("minishell: hardfail error: %s\n", strerror(errno));
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -72,6 +76,7 @@ int	main(int argc, char **argv)
 {
 	int	err;
 
+	init_minishell();
 	if (argc == 1)
 		err = interpret_loop();
 	else

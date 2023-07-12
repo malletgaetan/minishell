@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "minishell.h"
 
 // TODO update it with new env variable array system
 

@@ -27,18 +27,16 @@ int	pipe_to_file(int fdfrom, char *fileto, int redirtype)
 	int	err;
 	int	flags;
 
-	if (access(fileto, W_OK))
-	{
-		if (errno == ENOENT)
-			return (SOFTFAIL_ERROR);
-		return (HARDFAIL_ERROR);
-	}
 	flags = O_CREAT | O_WRONLY;
 	if (redirtype == D_REDIR_OUT)
 		flags |= O_APPEND;
 	fd = open(fileto, flags);
 	if (fd == -1)
+	{
+		if (errno == EACCES)
+			return (SOFTFAIL_ERROR);
 		return (HARDFAIL_ERROR);
+	}
 	err = fd_manual_pipe(fdfrom, fd, NULL);
 	close(fd);
 	return (err);
@@ -49,15 +47,15 @@ int	file_to_pipe(char *filefrom, int fdto)
 	int	fd;
 	int	err;
 
-	if (access(fileto, R_OK))
+	fd = open(filefrom, O_RDONLY);
+	if (fd == -1)
 	{
+		if (errno == EACCES)
+			return (SOFTFAIL_ERROR);
 		if (errno == ENOENT)
 			return (SOFTFAIL_ERROR);
 		return (HARDFAIL_ERROR);
 	}
-	fd = open(filefrom, O_RDONLY);
-	if (fd == -1)
-		return (HARDFAIL_ERROR);
 	err = fd_manual_pipe(fd, fdto, NULL);
 	close(fd);
 	return (err);

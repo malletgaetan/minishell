@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "minishell.h"
 
 char	*get_env_from_line(char **line)
 {

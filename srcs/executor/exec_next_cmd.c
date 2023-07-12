@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static size_t	count_words(t_token *token)
+static size_t	get_nb_args(t_token *token)
 {
 	size_t	c;
 
@@ -25,15 +25,12 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 	size_t	arg_i;
 	int		err;
 
-	cmd->arg_len = count_words(*token);
-	cmd->args = malloc(sizeof(char *) * (cmd->arg_len + 1));
+	cmd->arg_len = get_nb_args(*token);
+	cmd->args = gc_malloc((&g_minishell.gcan), sizeof(char *) * (cmd->arg_len + 1));
 	if (cmd->args == NULL)
-		return (HARDFAIL_ERROR); // TODO hard fail, kill all childs, free everything, print error and exit
+		return (HARDFAIL_ERROR);
 	if (pipe(cmd->pipeout))
-	{
-		free(cmd->args);
-		return (HARDFAIL_ERROR); // TODO hard fail, kill all childs, free everything, print error and exit
-	}
+		return (HARDFAIL_ERROR);
 	arg_i = 0;
 	while ((*token) && ((*token)->type != PIPE))
 	{
@@ -48,22 +45,23 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 		else if ((*token)->type == D_REDIR_IN)
 		{
 			if (pipe(cmd->pipein))
-				return (HARDFAIL_ERROR); // TODO hard fail, kill all childs, free everything, print error and exit
+				return (HARDFAIL_ERROR);
 			if (fd_manual_pipe(STDIN_FILENO, cmd->pipein[1], (*token)->next->value))
-				return (HARDFAIL_ERROR); // TODO, replace every hard fail error to HARDFAIL_ERR
+				return (HARDFAIL_ERROR);
 			(*token) = (*token)->next;
 		}
 		else if ((*token)->type == S_REDIR_IN)
 		{
 			if (pipe(cmd->pipein))
-				return (HARDFAIL_ERROR); // TODO hard fail, kill all childs, free everything, print error and exit
+				return (HARDFAIL_ERROR);
 			(*token) = (*token)->next;
 			err = file_to_pipe((*token)->value, cmd->pipein[1]);
-			if (err != 0)
+			if (err == SOFTFAIL_ERROR)
 			{
-				free(cmd->args);
-				return (err); // TODO can be soft fail
+				; // TODO handle
 			}
+			else if (err == HARDFAIL_ERROR)
+				return (err);
 		}
 		(*token) = (*token)->next;
 	}
@@ -73,6 +71,7 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 
 static int	setup_child_pipes(t_cmd *cmd, int is_last_cmd, int pipereadfd)
 {
+	// attach stdin to read end of file pipe
 	if (cmd->pipein[0] != 0)
 	{
 		if (close(cmd->pipein[1]))
@@ -81,9 +80,10 @@ static int	setup_child_pipes(t_cmd *cmd, int is_last_cmd, int pipereadfd)
 			return (HARDFAIL_ERROR);
 		if (close(cmd->pipein[0]))
 			return (HARDFAIL_ERROR);
-		if (pipereadfd != -1 && close(pipereadfd))
+		if (pipereadfd != 0 && close(pipereadfd))
 			return (HARDFAIL_ERROR);
 	}
+	// attach stdin to read end of old cmd pipe
 	else if (pipereadfd != 0)
 	{
 		if (dup2(pipereadfd, STDIN_FILENO) == -1)
@@ -106,14 +106,16 @@ static int	setup_child_pipes(t_cmd *cmd, int is_last_cmd, int pipereadfd)
 
 static int	unsetup_child_pipes(t_cmd *cmd, int pipereadfd)
 {
-	if (close(cmd->pipeout[1])) // close write end of next pipe
+	// close write end of next pipe
+	if (close(cmd->pipeout[1]))
 		return (HARDFAIL_ERROR);
 	if (cmd->pipein[0])
 	{
 		if (close(cmd->pipein[0]) || close(cmd->pipein[1]))
 			return (HARDFAIL_ERROR);
 	}
-	if (pipereadfd != 0)  // close read end of prec pipe
+	// close read end of prec pipe
+	if (pipereadfd != 0)
 	{
 		if (close(pipereadfd))
 			return (HARDFAIL_ERROR);
@@ -134,23 +136,17 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 	if (err == HARDFAIL_ERROR)
 		return (err);
 	if (err == SOFTFAIL_ERROR)
-	{
-		if (close(cmd.pipeout[0]) || close(cmd.pipeout[1]) || close(cmd.pipein[0]) || close(cmd.pipein[1]))
-			return (HARDFAIL_ERROR);
-		return (exec_next_cmd(token->next, 0, pids, depth)); // for the moment next command after a failed command takes input from stdin, in this case it shouldn't pipe at all
-	}
+		return (HARDFAIL_ERROR); // TODO handle softfail
 	pid = fork();
 	if (pid == 0)
 	{
 		if (setup_child_pipes(&cmd, token == NULL, pipereadfd))
 			return (HARDFAIL_ERROR);
 		execve(cmd.args[0], cmd.args, NULL);
-		free(cmd.args);
 		return (errno);
 	}
 	if (pid == -1)
 		return (HARDFAIL_ERROR);
-	free(cmd.args);
 	pids[depth] = pid;
 	if (unsetup_child_pipes(&cmd, pipereadfd))
 		return (HARDFAIL_ERROR);
@@ -163,5 +159,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 			kill(pid, SIGKILL);
 		cmd.pipeout[0] = 0;
 	}
+	if (token == NULL)
+		return (0);
 	return (exec_next_cmd(token->next, cmd.pipeout[0], pids, depth + 1));
 }
