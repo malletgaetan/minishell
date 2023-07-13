@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 15:57:55 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/10 15:58:15 by tbatteux         ###   ########.fr       */
+/*   Created: 2023/07/10 15:17:24 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/10 16:05:07 by tbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
 
-char	*ft_strdup(const char *s)
+char	**get_env(char **new_env, char **env)
 {
-	char	*final;
-	int		i;
+	int	i;
 
-	i = 0;
-	while (s[i])
-		i++;
-	final = malloc ((i + 1) * sizeof(char));
-	if (!final)
-		return (NULL);
-	i = 0;
-	while (s[i])
-	{
-		final[i] = s[i];
-		i++;
-	}
-	final[i] = 0;
-	return (final);
+	new_env = malloc((get_taille(env) + 1) * sizeof(char *));
+	i = -1;
+	while (env[++i])
+		new_env[i] = ft_strdup(env[i]);
+	new_env[i] = 0;
+	return (new_env);
 }
-

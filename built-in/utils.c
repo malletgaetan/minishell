@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env.c                                          :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 15:17:24 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/10 16:05:07 by tbatteux         ###   ########.fr       */
+/*   Created: 2023/07/10 15:57:55 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/11 16:40:23 by tbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
 
-int	taille_env(char **env)
+int	get_taille(char **env)
 {
 	int	i;
 
@@ -22,14 +22,35 @@ int	taille_env(char **env)
 	return (i);
 }
 
-char	**get_env(char **new_env, char **env)
+int	ft_strlen(char *str)
 {
 	int	i;
-
-	new_env = malloc((taille_env(env) + 1) * sizeof(char *));
-	i = -1;
-	while (env[++i])
-		new_env[i] = ft_strdup(env[i]);
-	new_env[i] = 0;
-	return (new_env);
+	
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
+
+char	*ft_strdup(const char *s)
+{
+	char	*final;
+	int		i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	final = malloc ((i + 1) * sizeof(char));
+	if (!final)
+		return (NULL);
+	i = 0;
+	while (s[i])
+	{
+		final[i] = s[i];
+		i++;
+	}
+	final[i] = 0;
+	return (final);
+}
+
+
