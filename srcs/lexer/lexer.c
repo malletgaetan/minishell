@@ -4,18 +4,6 @@
 // lexer set a stream of token in minishell global
 // lexer does expansion
 
-/* static void	free_token(t_token *token) */
-/* { */
-/* 	t_token	*next; */
-
-/* 	while (token != NULL) */
-/* 	{ */
-/* 		next = token->next; */
-/* 		free(token); */
-/* 		token = next; */
-/* 	} */
-/* } */
-
 int	lex(char *line, t_token **token, t_token **bad_token, int old_status)
 {
 	int		last_type;
@@ -46,5 +34,5 @@ int	lex(char *line, t_token **token, t_token **bad_token, int old_status)
 	}
 	if (last_type != WORD)
 		return (set_bad_token(&line, bad_token));
-	return (0);
+	return (LEXER_OK);
 }

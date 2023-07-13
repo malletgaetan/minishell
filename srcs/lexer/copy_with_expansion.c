@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "minishell.h"
 
 // TODO update it with new env variable array system
 
@@ -11,7 +11,7 @@ static int	cpy_squote(char **line, char **word)
 		*(++(*word)) = *(++(*line));
 	}
 	++(*line);
-	return (0);
+	return (LEXER_OK);
 }
 
 static unsigned int	atoi_buf(char *str, unsigned int old_status)
@@ -43,7 +43,7 @@ static int	cpy_env(char *env, char **word)
 		return (1);
 	while (*env)
 		*((*word)++) = *(env++);
-	return (0);
+	return (OK);
 }
 
 int	copy_with_expansion(char **line, char *word, int old_status)
@@ -84,5 +84,5 @@ int	copy_with_expansion(char **line, char *word, int old_status)
 	*word = '\0';
 	if (in_dquote)
 		return (LEXER_QUOTE_ERROR);
-	return (0);
+	return (LEXER_OK);
 }

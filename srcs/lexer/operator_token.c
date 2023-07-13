@@ -1,4 +1,4 @@
-#include "lexer.h"
+#include "minishell.h"
 
 static enum e_type	redir_out_type(char **line)
 {
@@ -35,7 +35,7 @@ int	set_operator_token(char **line, t_token **token)
 		type = PIPE;
 	else
 		err = LEXER_SYNTAX_ERROR;
-	(*token) = malloc(sizeof(t_token) + (sizeof(char) * 3));
+	(*token) = gc_malloc(&(g_minishell.gcan), sizeof(t_token) + (sizeof(char) * 3));
 	if ((*token) == NULL)
 		return (LEXER_MALLOC_ERROR);
 	cpytoken((*token)->value, line);
