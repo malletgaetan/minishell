@@ -1,29 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.h                                             :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 16:03:09 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/13 11:04:45 by tbatteux         ###   ########.fr       */
+/*   Created: 2023/07/13 17:39:31 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/13 17:41:44 by tbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_H
-# define TEST_H
+void	clean_env(char **env)
+{
+	int	i;
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <errno.h>
+	i = 0;
+	while (env[i])
+		free(env[i++]);
+	free(env);
+}
 
-
-int	ft_strlen(char *str);
-int	get_taille(char **env);
-int	ft_strncmp(const char *s1, const char *s2, size_t len);
-char	*ft_strdup(const char *s);
-char	*ft_strjoin(char *s1, char *s2);
-char	**get_env(char **new_env, char **env);
-
-#endif
+void	ft_exit(char **env)
+{
+	clean_env(env);
+	exit(0);
+}

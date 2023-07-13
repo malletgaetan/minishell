@@ -1,29 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.h                                             :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/10 16:03:09 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/13 11:04:45 by tbatteux         ###   ########.fr       */
+/*   Created: 2023/07/13 17:19:03 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/13 17:38:35 by tbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEST_H
-# define TEST_H
+#include "test.h"
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <errno.h>
+// prends les options et l'argument a ecrire dans un char **
 
+void	ft_putstr(char *str)
+{
+	int	i;
 
-int	ft_strlen(char *str);
-int	get_taille(char **env);
-int	ft_strncmp(const char *s1, const char *s2, size_t len);
-char	*ft_strdup(const char *s);
-char	*ft_strjoin(char *s1, char *s2);
-char	**get_env(char **new_env, char **env);
+	i = 0;
+	while (str[i])
+		write(1, &str[i++], 1);
+}
 
-#endif
+void	echo(char **arg)
+{
+
+	if (arg[0][0] == '-' && arg[0][1] == 'n')
+		ft_putstr(arg[1]);
+	else
+	{
+		ft_putstr(arg[0]);
+		write(1, "\n", 1);
+	}
+}
+
+/*
+int	main(int argc, char **argv)
+{
+	echo (&argv[1]);
+	return (0);
+}
+*/
