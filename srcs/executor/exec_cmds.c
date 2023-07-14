@@ -1,12 +1,14 @@
 #include "minishell.h"
 
-void	kill_all_childs(void)
+void	kill_all_childs(int sig)
 {
 	uint_t	i;
 
+	if (g_minishell.pids == NULL)
+		return ;
 	i = 0;
 	while (g_minishell.pids[i] != 0)
-		kill(g_minishell.pids[i++], SIGKILL);
+		kill(g_minishell.pids[i++], sig);
 }
 
 int	ex_cmds(void)
@@ -23,7 +25,7 @@ int	ex_cmds(void)
 	ft_memset(g_minishell.pids, 0, sizeof(int) * (g_minishell.nb_cmds + 1));
 	err = exec_next_cmd(g_minishell.token, 0, pids, 0);
 	if (err == HARDFAIL_ERROR)
-		kill_all_childs();
+		kill_all_childs(SIGKILL);
 	i = 0;
 	while (g_minishell.pids[i] != 0)
 	{

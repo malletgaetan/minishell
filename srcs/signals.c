@@ -3,6 +3,7 @@
 int	sigint(int code)
 {
 	(void)code;
+	kill_all_childs();
 	g_minishell.sigint = 1;
 }
 
