@@ -98,6 +98,7 @@ extern t_minishell	g_minishell;
 
 // TODO create exector.h
 void	kill_all_childs(int sig);
+void	wait_all_childs(t_minishell *minishell);
 int		close_zero(int *fd);
 size_t	get_nb_args(t_token *token);
 int		fd_manual_pipe(int fdfrom, int fdto, char *delim);

@@ -10,6 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
+
+void	wait_all_childs(t_minishell *minishell)
+{
+	int	i;
+	
+	i = 0;
+	while (minishell->pids[i])
+		waitpid(minishell->pids[i++], NULL);
+}
+
 void	clean_env(char **env)
 {
 	int	i;
@@ -23,5 +34,8 @@ void	clean_env(char **env)
 void	ft_exit(char **env)
 {
 	clean_env(env);
+	kill_all_childs(SIGKILL);
+	wait_all_childs(g_minishell);
+	gc_clean(&(g_minishell.gcan));
 	exit(0);
 }
