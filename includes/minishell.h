@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 # define BUF_SIZE 4096
+# define _XOPEN_SOURCE 700
 
 # include <errno.h>
 # include <signal.h>
@@ -69,6 +70,8 @@ enum e_error
 	SOFTFAIL_ERROR,
 };
 
+typedef struct sigaction t_sigaction;
+
 typedef struct s_minishell
 {
 	int			old_status;
@@ -78,7 +81,8 @@ typedef struct s_minishell
 	t_gcan		gcan;
 	int			*pids;
 	int			sigint;
-	uint_t		nb_cmds;
+	uint32_t	nb_cmds;
+	int			last_pid;
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
 	struct sigaction	sa_term;
@@ -97,22 +101,22 @@ typedef struct s_cmd
 extern t_minishell	g_minishell;
 
 // TODO create exector.h
-void	kill_all_childs(int sig);
-void	wait_all_childs(t_minishell *minishell);
+void	kill_all_childs(int sig, uint32_t start);
+void	wait_all_childs(void);
 int		close_zero(int *fd);
 size_t	get_nb_args(t_token *token);
 int		fd_manual_pipe(int fdfrom, int fdto, char *delim);
 int		pipe_to_file(int fdfrom, char *fileto, int redirtype);
 int		file_to_pipe(char *filefrom, int fdto);
 int		file_to_pipe(char *filefrom, int fdto);
-int		exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth);
+int		exec_next_cmd(t_token *token, int pipereadfd, int depth);
 int		ex_cmds(void);
 
 // signals
-int		sigint(int code);
-int		sigquit(int code);
-int		sigterm(int code);
-void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*sa_handler)(int));
+void	sigint(int code);
+void	sigquit(int code);
+void	sigterm(int code);
+void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*h)(int));
 void	setup_sigactions(void);
 
 #endif

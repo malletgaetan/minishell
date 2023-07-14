@@ -14,9 +14,9 @@ static int	cpy_squote(char **line, char **word)
 	return (LEXER_OK);
 }
 
-static uint_t	atoi_buf(char *str, unsigned int old_status)
+static uint32_t	atoi_buf(char *str, unsigned int old_status)
 {
-	uint_t	res;
+	uint32_t	res;
 
 	if (old_status < 10)
 	{
@@ -28,7 +28,7 @@ static uint_t	atoi_buf(char *str, unsigned int old_status)
 	return (res + 1);
 }
 
-static uint_t	cpy_old_status(char *str, int old_status)
+static uint32_t	cpy_old_status(char *str, int old_status)
 {
 	if (old_status < 0)
 	{

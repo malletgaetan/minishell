@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 17:39:31 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/13 17:41:44 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:09:16 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	clean_env(char **env)
 void	ft_exit(char **env)
 {
 	clean_env(env);
-	kill_all_childs(SIGKILL);
-	wait_all_childs(g_minishell);
+	kill_all_childs(SIGKILL, 0);
+	wait_all_childs();
 	gc_clean(&(g_minishell.gcan));
 	exit(0);
 }

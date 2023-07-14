@@ -1,0 +1,9 @@
+Makefile
+README.md
+ft_printf
+gc
+includes
+lala.txt
+libft
+minishell
+srcs

@@ -1,26 +1,26 @@
 #include "minishell.h"
 
-int	sigint(int code)
+void	sigint(int code)
 {
 	(void)code;
 	g_minishell.sigint = 1;
 }
 
-int	sigquit(int code)
+void	sigquit(int code)
 {
 	(void)code;
 }
 
-int	sigterm(int code)
+void	sigterm(int code)
 {
 	(void)code;
 }
 
-void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*sa_handler)(int))
+void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*h)(int))
 {
-	sa->sa_handler = sa_handler;
-	sa->flags = flags;
-    sigemptyset(&(sa.sa_mask));
+	sa->sa_handler = h;
+	sa->sa_flags = flags;
+    sigemptyset(&(sa->sa_mask));
     sigaction(sig, sa, 0);
 }
 
