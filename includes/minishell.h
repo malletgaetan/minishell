@@ -76,10 +76,12 @@ typedef struct s_minishell
 	t_token		*bad_token;
 	char		buf[BUF_SIZE];
 	t_gcan		gcan;
-	int			pids;
-	uint_t		pids_size;
-	int				sigint;
+	int			*pids;
+	int			sigint;
 	uint_t		nb_cmds;
+	struct sigaction	sa_int;
+	struct sigaction	sa_quit;
+	struct sigaction	sa_term;
 }	t_minishell;
 
 typedef struct s_cmd
@@ -104,5 +106,12 @@ int		file_to_pipe(char *filefrom, int fdto);
 int		file_to_pipe(char *filefrom, int fdto);
 int		exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth);
 int		ex_cmds(void);
+
+// signals
+int		sigint(int code);
+int		sigquit(int code);
+int		sigterm(int code);
+void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*sa_handler)(int));
+void	setup_sigactions(void);
 
 #endif

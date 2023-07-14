@@ -26,6 +26,8 @@ static int	interpret(char *line)
 	int	err;
 
 	err = lex(line, &(g_minishell.token), &(g_minishell.bad_token), g_minishell.old_status);
+	if (g_minishell.sigint != 0)
+		return (130);
 	if (err != LEXER_OK)
 	{
 		handle_lexer_error(err);
@@ -49,9 +51,15 @@ static int	interpret_loop(void)
 	
 	while (42)
 	{
+		g_minishell.sigint = 0;
 		line = readline("minishell$>");
 		if (line == NULL)
 			break ;
+		if (g_minishell.sigint != 0)
+		{
+			free(line);
+			continue ;
+		}
 		err = lex(line, &(g_minishell.token), &(g_minishell.bad_token), g_minishell.old_status);
 		if (err != LEXER_OK)
 		{
@@ -63,7 +71,7 @@ static int	interpret_loop(void)
 		free(line);
 		err = ex_cmds(); 
 		gc_clean(&(g_minishell.gcan));
-		if (err != OK && err != SIGINT_ERROR)
+		if (err != OK)
 		{
 			ft_printf("minishell: hardfail error: %s\n", strerror(errno));
 			return (1);
@@ -77,8 +85,6 @@ int	main(int argc, char **argv)
 	int	err;
 
 	init_minishell();
-	signal(SIGINT, &sigint);
-	signal(SIGQUIT, &sigquit);
 	if (argc == 1)
 		err = interpret_loop();
 	else

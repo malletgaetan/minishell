@@ -135,7 +135,6 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int pids[10], int depth)
 	}
 	if (last_pid == -1)
 		return (HARDFAIL_ERROR);
-	g_minishell.nb_child += 1;
 	last_pids[depth] = last_pid;
 	if (unsetup_child_pipes(&cmd, &pipereadfd))
 		return (HARDFAIL_ERROR);
