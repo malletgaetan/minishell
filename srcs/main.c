@@ -63,7 +63,7 @@ static int	interpret_loop(void)
 		free(line);
 		err = ex_cmds(); 
 		gc_clean(&(g_minishell.gcan));
-		if (err != OK)
+		if (err != OK && err != SIGINT_ERROR)
 		{
 			ft_printf("minishell: hardfail error: %s\n", strerror(errno));
 			return (1);
@@ -77,6 +77,8 @@ int	main(int argc, char **argv)
 	int	err;
 
 	init_minishell();
+	signal(SIGINT, &sigint);
+	signal(SIGQUIT, &sigquit);
 	if (argc == 1)
 		err = interpret_loop();
 	else

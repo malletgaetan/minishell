@@ -2,8 +2,6 @@
 # define MINISHELL_H
 
 # define BUF_SIZE 4096
-# define MALLOC_ERROR 1
-# define PIPE_ERROR 2
 
 # include <errno.h>
 # include <signal.h>
@@ -16,6 +14,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
+# include <stdint.h>
 # include "libft.h"
 # include "ft_printf.h"
 # include "gc.h"
@@ -77,6 +76,10 @@ typedef struct s_minishell
 	t_token		*bad_token;
 	char		buf[BUF_SIZE];
 	t_gcan		gcan;
+	int			pids;
+	uint_t		pids_size;
+	int				sigint;
+	uint_t		nb_cmds;
 }	t_minishell;
 
 typedef struct s_cmd

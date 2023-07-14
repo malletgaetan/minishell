@@ -32,7 +32,10 @@ int	set_operator_token(char **line, t_token **token)
 	else if ((**line) == '>')
 		type = redir_out_type(line);
 	else if ((**line) == '|')
+	{
 		type = PIPE;
+		g_minishell.nb_cmds += 1;
+	}
 	else
 		err = LEXER_SYNTAX_ERROR;
 	(*token) = gc_malloc(&(g_minishell.gcan), sizeof(t_token) + (sizeof(char) * 3));
