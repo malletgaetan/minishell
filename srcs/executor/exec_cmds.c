@@ -1,16 +1,5 @@
 #include "minishell.h"
 
-void	kill_all_childs(int sig, uint32_t start)
-{
-	uint32_t	i;
-
-	if (g_minishell.pids == NULL)
-		return ;
-	i = start;
-	while (g_minishell.pids[i] != 0)
-		kill(g_minishell.pids[i++], sig);
-}
-
 int	ex_cmds(void)
 {
 	int		err;

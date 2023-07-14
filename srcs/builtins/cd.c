@@ -18,7 +18,7 @@ void	update_env(char ***env)
 	int		i;
 
 	buf = malloc(1000);
-	buf = getenv(PWD);
+	buf = getenv("PWD");
 	i = 0;
 	while ((*env)[i])
 	{

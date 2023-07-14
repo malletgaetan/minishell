@@ -12,15 +12,6 @@
 
 #include "minishell.h"
 
-void	wait_all_childs(t_minishell *minishell)
-{
-	int	i;
-	
-	i = 0;
-	while (minishell->pids[i])
-		waitpid(minishell->pids[i++], NULL);
-}
-
 void	clean_env(char **env)
 {
 	int	i;

@@ -52,6 +52,7 @@ static int	interpret_loop(void)
 	while (42)
 	{
 		g_minishell.sigint = 0;
+		g_minishell.token = NULL;
 		line = readline("minishell$>");
 		if (line == NULL)
 			break ;
@@ -69,6 +70,8 @@ static int	interpret_loop(void)
 			continue ;
 		}
 		free(line);
+		if (g_minishell.token == NULL)
+			continue ;
 		err = ex_cmds(); 
 		gc_clean(&(g_minishell.gcan));
 		if (err != OK)
