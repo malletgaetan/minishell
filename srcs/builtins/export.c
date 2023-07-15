@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test.h"
+#include "gc.h"
+#include "minishell.h"
+#include "libft.h"
 
 char	**add(char **env, char *arg)
 {

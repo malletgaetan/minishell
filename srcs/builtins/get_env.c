@@ -10,11 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test.h"
+#include "gc.h"
+#include "minishell.h"
+#include "libft.h"
 
-char	**get_env(char **new_env, char **env)
+char	**get_env(char **env)
 {
 	int	i;
+	char	**new_env;
 
 	new_env = malloc((get_taille(env) + 1) * sizeof(char *));
 	i = -1;

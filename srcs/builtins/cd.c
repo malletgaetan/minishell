@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test.h"
+#include "gc.h"
+#include "minishell.h"
+#include "libft.h"
 
 void	update_env(char ***env)
 {

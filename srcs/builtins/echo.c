@@ -10,18 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test.h"
-
-// prends les options et l'argument a ecrire dans un char **
-
-void	ft_putstr(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		write(1, &str[i++], 1);
-}
+#include "gc.h"
+#include "minishell.h"
+#include "libft.h"
 
 void	echo(char **arg)
 {
