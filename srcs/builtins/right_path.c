@@ -50,5 +50,6 @@ char	*right_path(char *cmd, char **env)
 	while (tab_path[++x])
 		free(tab_path[x]);
 	free(tab_path);
+	// free cmd ?
 	return (path);
 }
