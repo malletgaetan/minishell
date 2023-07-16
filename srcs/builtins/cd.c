@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	update_env(char ***env)
+void	ft_update_env(char ***env)
 {
 	char	*buf;
 	int		i;
@@ -32,11 +32,11 @@ void	update_env(char ***env)
 	(*env)[i] = buf;
 }
 
-void	cd(char *path, char **env)
+void	ft_cd(char *path, char **env)
 {
 	if (chdir(path) == -1)
 		perror("error");
-	update_env(&env);
+	ft_update_env(&env);
 }
 
 /*

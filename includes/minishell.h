@@ -109,8 +109,8 @@ int		fd_manual_pipe(int fdfrom, int fdto, char *delim);
 int		pipe_to_file(int fdfrom, char *fileto, int redirtype);
 int		file_to_pipe(char *filefrom, int fdto);
 int		file_to_pipe(char *filefrom, int fdto);
-int		exec_next_cmd(t_token *token, int pipereadfd, int depth);
-int		ex_cmds(void);
+int		exec_next_cmd(t_token *token, int pipereadfd, int depth, char **env);
+int		ex_cmds(char **env);
 
 // signals
 void	sigint(int code);
@@ -119,4 +119,10 @@ void	sigterm(int code);
 void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*h)(int));
 void	setup_sigactions(void);
 
+// builtin et path
+
+char    **ft_split_path(const char *s, char c);
+char	**get_env(char **env);
+char	*right_path(char *cmd, char **env);
+int	get_taille(char **env);
 #endif

@@ -107,9 +107,10 @@ int	close_all_pipes(t_cmd *cmd, int *pipereadfd)
 	return (close_zero(pipereadfd));
 }
 
-int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
+int	exec_next_cmd(t_token *token, int pipereadfd, int depth, char **env)
 {
 	t_cmd	cmd;
+	char	*path;
 	int		err;
 	
 	if (token == NULL)
@@ -123,14 +124,18 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 		if (close_all_pipes(&cmd, &pipereadfd))
 			return (HARDFAIL_ERROR);
 		ft_printf("minishell: software error: %s\n", strerror(errno)); // TODO have correct message
-		return (exec_next_cmd(token->next, 0, depth));
+		return (exec_next_cmd(token->next, 0, depth, env));
 	}
 	g_minishell.pids[depth] = fork();
 	if (g_minishell.pids[depth] == 0)
 	{
 		if (setup_child_pipes(&cmd, token == NULL, &pipereadfd))
 			return (HARDFAIL_ERROR);
-		execve(cmd.args[0], cmd.args, NULL);
+		//for (int i; cmd.args[i] ; i++)
+			//printf("%s\n", cmd.args[i]);
+		// transform env en get_env dans le main (malloc)
+		path = right_path(cmd.args[0], env);
+		execve(path, cmd.args, NULL);
 		return (errno);
 	}
 	if (g_minishell.pids[depth] == -1)
@@ -156,5 +161,5 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 	}
 	if (token == NULL)
 		return (OK);
-	return (exec_next_cmd(token->next, cmd.pipeout[0], depth + 1));
+	return (exec_next_cmd(token->next, cmd.pipeout[0], depth + 1, env));
 }

@@ -21,7 +21,7 @@ void	handle_lexer_error(int err)
 		ft_printf("minishell: quotes doesn't guard\n");
 }
 
-static int	interpret(char *line)
+static int	interpret(char *line, char **env)
 {
 	int	err;
 
@@ -34,7 +34,7 @@ static int	interpret(char *line)
 		gc_clean(&(g_minishell.gcan));
 		return (2);
 	}
-	err = ex_cmds();
+	err = ex_cmds(env);
 	gc_clean(&(g_minishell.gcan));
 	if (err != OK)
 	{
@@ -44,7 +44,7 @@ static int	interpret(char *line)
 	return (0);
 }
 
-static int	interpret_loop(void)
+static int	interpret_loop(char **env)
 {
 	char	*line;
 	int	err;
@@ -72,7 +72,7 @@ static int	interpret_loop(void)
 		free(line);
 		if (g_minishell.token == NULL)
 			continue ;
-		err = ex_cmds(); 
+		err = ex_cmds(env); 
 		gc_clean(&(g_minishell.gcan));
 		if (err != OK)
 		{
@@ -83,14 +83,14 @@ static int	interpret_loop(void)
 	return (OK);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
 	int	err;
 
 	init_minishell();
 	if (argc == 1)
-		err = interpret_loop();
+		err = interpret_loop(env);
 	else
-		err = interpret(argv[1]);
+		err = interpret(argv[1], env);
 	return (err);
 }

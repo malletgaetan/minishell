@@ -19,7 +19,7 @@ char	*find_path(char **env)
 	int	x;
 
 	x = 0;
-	while ((*env)[x])
+	while (env[x])
 	{
 		if (ft_strncmp(env[x], "PATH", 4) == 0)
 			break ;
@@ -36,7 +36,7 @@ char	*right_path(char *cmd, char **env)
 	int		x;
 
 	newenv = find_path(env);
-	tab_path = ft_split(newenv, ':');
+	tab_path = ft_split_path(newenv, ':');
 	x = 0;
 	while (tab_path[x])
 	{

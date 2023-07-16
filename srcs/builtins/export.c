@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-char	**add(char **env, char *arg)
+char	**ft_add(char **env, char *arg)
 {
 	char	**new_env;
 	int		i;
@@ -43,10 +43,8 @@ int	verif(char *str)
 	}
 	return (1);
 }
-	//printf("invalid argument\n");
-	// pas d'erreur ecrite par le vrai shell
 
-char	**export(char **new_env, char **argv)
+char	**ft_export(char **new_env, char **argv)
 {
 	int	i;
 
@@ -54,7 +52,7 @@ char	**export(char **new_env, char **argv)
 	while (argv[i])
 	{
 		if (verif(argv[i]) == 0)
-			new_env = add(new_env, argv[i]);
+			new_env = ft_add(new_env, argv[i]);
 		i++;
 	}
 	return (new_env);

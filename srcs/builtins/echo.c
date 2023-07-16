@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	echo(char **arg)
+void	ft_echo(char **arg)
 {
 
 	if (arg[0][0] == '-' && arg[0][1] == 'n')

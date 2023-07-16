@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	env(char **env)
+void	ft_env(char **env)
 {
 	int	i;
 

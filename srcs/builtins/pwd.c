@@ -14,7 +14,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-void	pwd(void)
+void	ft_pwd(void)
 {
 	char	*buf;
 	int		x;
