@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 10:53:01 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/13 11:41:40 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/15 09:06:37 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "test.h"
 
-void	pwd(void)
+void	pwd_builtin(void)
 {
 	char	*buf;
 	int		x;
 
-	x = 1000;
+	x = 4096; // max len of combined path name + file name is 4096 bytes
 	buf = malloc(x);
 	getcwd(buf, x);
 	printf("%s\n", buf);

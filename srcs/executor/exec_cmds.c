@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+
 int	ex_cmds(void)
 {
 	int		err;
@@ -33,4 +34,32 @@ int	ex_cmds(void)
 		setup_sigaction(&(g_minishell.sa_int), SIGINT, SA_RESTART, sigint); // back to SA_RESTART
 	gc_free(&(g_minishell.gcan), (void **)&(g_minishell.pids));
 	return (err);
+}
+
+char	*next_cmd_name(void)
+{
+	t_token	*token;
+
+	token = g_minishell.token;
+	while (token != NULL)
+	{
+		if (token->type == WORD)
+			return (token->value);
+		else
+			token = token->next;
+		if (token != NULL)
+			token = token->next;
+	}
+	return (NULL);
+}
+
+int	exec(void)
+{
+	char	*cmd;
+
+	cmd = next_cmd_name();
+	// nb_cmds == 1 && is in (export, cd, unset, exit) => exec_simple_builtin
+	if (is_nonpiped_builtin(cmd))
+		return (exec_nonpiped_builtin());
+	return (exec_cmds());
 }
