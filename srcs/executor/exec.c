@@ -51,6 +51,9 @@ int	is_nonpiped_builtin(char *cmd)
 int	exec(char **env)
 {
 	char	*cmd;
+	int (void)	fn;
+
+	fn = NULL;
 
 	cmd = next_cmd_name();
 	if (is_nonpiped_builtin(cmd))

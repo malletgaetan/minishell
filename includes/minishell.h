@@ -15,9 +15,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
+# include <stdio.h>
 # include <stdint.h>
 # include "libft.h"
-# include "ft_printf.h"
 # include "gc.h"
 
 // TODO create lexer.h

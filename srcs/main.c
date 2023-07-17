@@ -14,11 +14,11 @@ static void	init_minishell(void)
 void	handle_lexer_error(int err)
 {
 	if (err == LEXER_MALLOC_ERROR)
-		ft_printf("minishell: unexpected error\n");
+		printf("minishell: unexpected error\n");
 	else if (err == LEXER_SYNTAX_ERROR)
-		ft_printf("minishell: syntax errror near unexpected token `%s'\n", g_minishell.bad_token->value);
+		printf("minishell: syntax errror near unexpected token `%s'\n", g_minishell.bad_token->value);
 	else if (err == LEXER_QUOTE_ERROR)
-		ft_printf("minishell: quotes doesn't guard\n");
+		printf("minishell: quotes doesn't guard\n");
 }
 
 static int	interpret(char *line, char **env)
@@ -40,7 +40,7 @@ static int	interpret(char *line, char **env)
 	gc_clean(&(g_minishell.gcan));
 	if (err != OK)
 	{
-		ft_printf("minishell: hardfail error: %s\n", strerror(errno));
+		printf("minishell: hardfail error: %s\n", strerror(errno));
 		return (1);
 	}
 	return (0);
@@ -78,7 +78,7 @@ static int	interpret_loop(char **env)
 		gc_clean(&(g_minishell.gcan));
 		if (err != OK)
 		{
-			ft_printf("minishell: hardfail error: %s\n", strerror(errno));
+			printf("minishell: hardfail error: %s\n", strerror(errno));
 			return (1);
 		}
 	}

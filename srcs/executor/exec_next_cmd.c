@@ -123,7 +123,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth, char **env)
 	{
 		if (close_all_pipes(&cmd, &pipereadfd))
 			return (HARDFAIL_ERROR);
-		ft_printf("minishell: software error: %s\n", strerror(errno)); // TODO have correct message
+		printf("minishell: software error: %s\n", strerror(errno)); // TODO have correct message
 		return (exec_next_cmd(token->next, 0, depth, env));
 	}
 	g_minishell.pids[depth] = fork();
@@ -155,7 +155,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth, char **env)
 			kill(g_minishell.pids[depth], SIGKILL);
 			if (close_all_pipes(&cmd, &pipereadfd))
 				return (HARDFAIL_ERROR);
-			ft_printf("minishell: software error: %s\n", strerror(errno)); // TODO have correct message
+			printf("minishell: software error: %s\n", strerror(errno)); // TODO have correct message
 			--depth; // TODO fix this ugly sht, made bc don't wait to increment depth if command didn't executed properly
 		}
 	}
