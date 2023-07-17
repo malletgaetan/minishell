@@ -41,6 +41,8 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 		}
 		(*token) = (*token)->next;
 	}
+	if ((*token)->type == PIPE)
+		(*token) = (*token)->next;
 	cmd->args[arg_i] = NULL;
 	return (OK);
 }
@@ -107,7 +109,7 @@ int	close_all_pipes(t_cmd *cmd, int *pipereadfd)
 	return (close_zero(pipereadfd));
 }
 
-int	exec_next_cmd(t_token *token, int pipereadfd, int depth, char **env)
+int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 {
 	t_cmd	cmd;
 	char	*path;
@@ -119,22 +121,21 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth, char **env)
 	err = setup_cmd(&cmd, &token);
 	if (err == HARDFAIL_ERROR)
 		return (err);
-	if (err == SOFTFAIL_ERROR)
+	// ignore (cd, export, exit or unset) in pipes
+	if (err == SOFTFAIL_ERROR || is_unpiped_builtin(cmd.args[0]))
 	{
 		if (close_all_pipes(&cmd, &pipereadfd))
 			return (HARDFAIL_ERROR);
-		printf("minishell: software error: %s\n", strerror(errno)); // TODO have correct message
-		return (exec_next_cmd(token->next, 0, depth, env));
+		if (err == SOFTFAIL_ERROR)
+			printf("minishell: software error: %s\n", strerror(errno)); // TODO have correct message
+		return (exec_next_cmd(token, 0, depth));
 	}
 	g_minishell.pids[depth] = fork();
 	if (g_minishell.pids[depth] == 0)
 	{
 		if (setup_child_pipes(&cmd, token == NULL, &pipereadfd))
-			return (HARDFAIL_ERROR);
-		//for (int i; cmd.args[i] ; i++)
-			//printf("%s\n", cmd.args[i]);
-		// transform env en get_env dans le main (malloc)
-		path = right_path(cmd.args[0], env);
+			return (errno);
+		path = right_path(cmd.args[0], g_minishell.envs);
 		execve(path, cmd.args, NULL);
 		return (errno);
 	}
@@ -144,7 +145,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth, char **env)
 		return (HARDFAIL_ERROR);
 	if (cmd.redirout_type != 0)
 	{
-		err = pipe_to_file(cmd.pipeout[0], cmd.redirout_file, cmd.redirout_type); // TODO handle softfails
+		err = pipe_to_file(cmd.pipeout[0], cmd.redirout_file, cmd.redirout_type);
 		if (close_zero(cmd.pipeout))
 			return (HARDFAIL_ERROR);
 		cmd.pipeout[0] = 0;
@@ -161,5 +162,5 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth, char **env)
 	}
 	if (token == NULL)
 		return (OK);
-	return (exec_next_cmd(token->next, cmd.pipeout[0], depth + 1, env));
+	return (exec_next_cmd(token, cmd.pipeout[0], depth + 1));
 }

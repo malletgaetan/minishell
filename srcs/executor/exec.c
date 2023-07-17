@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	exec_cmds(char **env)
+int	exec_cmds(void)
 {
 	int		err;
 	uint32_t	i;
@@ -9,7 +9,7 @@ int	exec_cmds(char **env)
 	if (g_minishell.pids == NULL)
 		return (HARDFAIL_ERROR);
 	ft_memset(g_minishell.pids, 0, sizeof(int) * (g_minishell.nb_cmds + 1));
-	err = exec_next_cmd(g_minishell.token, 0, 0, env);
+	err = exec_next_cmd(g_minishell.token, 0, 0);
 	if (err == HARDFAIL_ERROR)
 		kill_all_childs(SIGKILL, 0);
 	i = 0;
@@ -35,28 +35,12 @@ int	exec_cmds(char **env)
 	return (err);
 }
 
-int	is_nonpiped_builtin(char *cmd)
-{
-	if (!strcmp(cmd, "export"))
-		return (1);
-	if (!strcmp(cmd, "cd"))
-		return (1);
-	if (!strcmp(cmd, "unset"))
-		return (1);
-	if (!strcmp(cmd, "exit"))
-		return (1);
-	return (0);
-}
-
-int	exec(char **env)
+int	exec(void)
 {
 	char	*cmd;
-	int (void)	fn;
-
-	fn = NULL;
 
 	cmd = next_cmd_name();
-	if (is_nonpiped_builtin(cmd))
-		return (exec_simple_builtin(env));
-	return (exec_cmds(env));
+	if ((g_minishell.nb_cmds == 1) && is_unpiped_builtin())
+		return (exec_simple_builtin());
+	return (exec_cmds());
 }

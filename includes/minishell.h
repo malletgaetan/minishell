@@ -78,7 +78,7 @@ typedef struct s_minishell
 	t_token		*token;
 	t_token		*bad_token;
 	char		buf[BUF_SIZE];
-	t_gcan		gcan;
+	t_gcan		gcan; // TODO need a way to not clean envs that are gc_malloc'ed
 	int			*pids;
 	int			sigint;
 	uint32_t	nb_cmds;
@@ -109,8 +109,10 @@ int		fd_manual_pipe(int fdfrom, int fdto, char *delim);
 int		pipe_to_file(int fdfrom, char *fileto, int redirtype);
 int		file_to_pipe(char *filefrom, int fdto);
 int		file_to_pipe(char *filefrom, int fdto);
-int		exec_next_cmd(t_token *token, int pipereadfd, int depth, char **env);
-int		ex_cmds(char **env);
+int		exec_next_cmd(t_token *token, int pipereadfd, int depth);
+int		ex_cmds(void);
+int		exec_simple_builtin(void);
+int		is_unpiped_builtin(char *cmd);
 
 // signals
 void	sigint(int code);
@@ -120,7 +122,13 @@ void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*h)(int));
 void	setup_sigactions(void);
 
 // builtin et path
-
+int		cd_builtin(int argc, char **argv);
+int		echo_builtin(int argc, char **argv);
+int		export_builtin(int argc, char **argv);
+int		unset_builtin(int argc, char **argv);
+int		env_builtin(void);
+int		exit_builtin(void);
+int		pwd_builtin(void);
 char    **ft_split_path(const char *s, char c);
 char	**get_env(char **env);
 char	*right_path(char *cmd, char **env);

@@ -6,7 +6,7 @@
 /*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 16:23:30 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/17 18:15:14 by gmallet          ###   ########.fr       */
+/*   Updated: 2023/07/17 19:14:52 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	**suppr(char **env, char *argv)
 	return (new_env);
 }
 
-char	**ft_unset(char **new_env, char **argv)
+char	**ft_unset(int argc, char **argv)
 {
 	int	i;
 

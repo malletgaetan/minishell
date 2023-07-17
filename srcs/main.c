@@ -36,7 +36,7 @@ static int	interpret(char *line, char **env)
 	}
 	if (g_minishell.token == NULL)
 		return (0);
-	err = ex_cmds(env);
+	err = exec();
 	gc_clean(&(g_minishell.gcan));
 	if (err != OK)
 	{
@@ -74,7 +74,7 @@ static int	interpret_loop(char **env)
 		free(line);
 		if (g_minishell.token == NULL)
 			continue ;
-		err = ex_cmds(env); 
+		err = exec(); 
 		gc_clean(&(g_minishell.gcan));
 		if (err != OK)
 		{

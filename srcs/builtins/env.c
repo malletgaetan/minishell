@@ -6,13 +6,13 @@
 /*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:16:02 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/17 18:11:45 by gmallet          ###   ########.fr       */
+/*   Updated: 2023/07/17 19:14:31 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_env(void)
+int	env_builtin(void)
 {
 	int	i;
 

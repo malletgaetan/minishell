@@ -51,3 +51,16 @@ size_t	get_nb_args(t_token *token)
 	}
 	return (c);
 }
+
+int	is_unpiped_builtin(char *cmd)
+{
+	if (!strncmp(cmd, "cd"))
+		return (1);
+	if (!strcmp(cmd, "export"))
+		return (1);
+	if (!strcmp(cmd, "unset"))
+		return (1);
+	if (!strcmp(cmd, "exit"))
+		return (1);
+	return (0);
+}
