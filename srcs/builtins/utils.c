@@ -3,18 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:57:55 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/11 16:40:23 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:14:23 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
 #include "minishell.h"
-#include "libft.h"
 
-int	get_taille(char **env)
+int	get_size(char **env)
 {
 	int	i;
 

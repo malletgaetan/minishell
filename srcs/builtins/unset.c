@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 16:23:30 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/11 16:41:01 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:15:14 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
 #include "minishell.h"
-#include "libft.h"
 
 char	**suppr(char **env, char *argv)
 {
@@ -20,7 +18,7 @@ char	**suppr(char **env, char *argv)
 	int		i;
 	int		j;
 
-	new_env = malloc((get_taille(env) + 1) * sizeof(char *));
+	new_env = malloc(get_size((env) + 1) * sizeof(char *));
 	i = 0;
 	j = 0;
 	while (env[i])
@@ -40,7 +38,7 @@ char	**ft_unset(char **new_env, char **argv)
 
 	i = 1;
 	while (argv[i])
-		new_env =suppr(new_env, argv[i++]);
+		new_env = suppr(new_env, argv[i++]);
 	return (new_env);
 }
 

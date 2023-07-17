@@ -3,27 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 10:53:01 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/13 11:41:40 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:27:25 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
 #include "minishell.h"
-#include "libft.h"
 
-void	ft_pwd(void)
+void	pwd_builtin(void)
 {
 	char	*buf;
-	int		x;
 
-	x = 1000;
-	buf = malloc(x);
-	getcwd(buf, x);
-	printf("%s\n", buf);
-	free(buf);
+	buf = gc_malloc(&(g_minishell.gcan), sizeof(char) * 4096);
+	getcwd(buf, 4096);
+	ft_printf("%s\n", buf);
+	gc_free(&(g_minishell.gcan), (void **)&buf);
 }
 
 /*

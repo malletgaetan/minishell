@@ -34,7 +34,7 @@ int	close_zero(int *fd)
 
 size_t	get_nb_args(t_token *token)
 {
-	size_t	c;
+	int	c;
 
 	c = 0;
 	while (token && token->type != PIPE)

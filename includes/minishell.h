@@ -91,7 +91,7 @@ typedef struct s_minishell
 typedef struct s_cmd
 {
 	char	**args;
-	size_t	arg_len;
+	int		arg_len;
 	int		pipeout[2];
 	int		pipein[2];
 	int		redirout_type;
@@ -124,5 +124,5 @@ void	setup_sigactions(void);
 char    **ft_split_path(const char *s, char c);
 char	**get_env(char **env);
 char	*right_path(char *cmd, char **env);
-int	get_taille(char **env);
+int	get_size(char **env);
 #endif

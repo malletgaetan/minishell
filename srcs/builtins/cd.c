@@ -3,23 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 15:29:51 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/13 17:51:13 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:18:50 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
 #include "minishell.h"
-#include "libft.h"
 
-void	ft_update_env(char ***env)
+void	ft_update_env(void)
 {
 	char	*buf;
 	int		i;
 
-	buf = malloc(1000);
 	buf = getenv("PWD");
 	i = 0;
 	while ((*env)[i])
@@ -32,10 +29,11 @@ void	ft_update_env(char ***env)
 	(*env)[i] = buf;
 }
 
-void	ft_cd(char *path, char **env)
+
+int	cd_builtin(int argc, char **argv)
 {
 	if (chdir(path) == -1)
-		perror("error");
+		return (-1);
 	ft_update_env(&env);
 }
 

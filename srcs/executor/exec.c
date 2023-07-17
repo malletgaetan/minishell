@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ex_cmds(char **env)
+int	exec_cmds(char **env)
 {
 	int		err;
 	uint32_t	i;
@@ -33,4 +33,27 @@ int	ex_cmds(char **env)
 		setup_sigaction(&(g_minishell.sa_int), SIGINT, SA_RESTART, sigint); // back to SA_RESTART
 	gc_free(&(g_minishell.gcan), (void **)&(g_minishell.pids));
 	return (err);
+}
+
+int	is_nonpiped_builtin(char *cmd)
+{
+	if (!strcmp(cmd, "export"))
+		return (1);
+	if (!strcmp(cmd, "cd"))
+		return (1);
+	if (!strcmp(cmd, "unset"))
+		return (1);
+	if (!strcmp(cmd, "exit"))
+		return (1);
+	return (0);
+}
+
+int	exec(char **env)
+{
+	char	*cmd;
+
+	cmd = next_cmd_name();
+	if (is_nonpiped_builtin(cmd))
+		return (exec_simple_builtin(env));
+	return (exec_cmds(env));
 }

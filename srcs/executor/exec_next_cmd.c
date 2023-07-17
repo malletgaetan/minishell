@@ -2,7 +2,7 @@
 
 static int	setup_cmd(t_cmd *cmd, t_token **token)
 {
-	size_t	arg_i;
+	int		arg_i;
 	int		err;
 
 	cmd->arg_len = get_nb_args(*token);

@@ -3,29 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:37:36 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/11 16:17:31 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:14:34 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
 #include "minishell.h"
-#include "libft.h"
 
 char	**ft_add(char **env, char *arg)
 {
 	char	**new_env;
 	int		i;
 
-	new_env = malloc((get_taille(env) + 2) * sizeof(char *));
+	new_env = gc_malloc(&(g_minishell.gcan), (get_size(env) + 2) * sizeof(char *));
 	i = -1;
 	while (env[++i])
 		new_env[i] = env[i];
 	new_env[i] = ft_strdup(arg);
 	new_env[i + 1] = 0;
-	free(env);
+	gc_free(&(g_minishell.gcan), (void **)&env);
 	return (new_env);
 }
 
@@ -44,7 +42,7 @@ int	verif(char *str)
 	return (1);
 }
 
-char	**ft_export(char **new_env, char **argv)
+int	export_builtin(int argc, char **argv)
 {
 	int	i;
 
@@ -52,10 +50,9 @@ char	**ft_export(char **new_env, char **argv)
 	while (argv[i])
 	{
 		if (verif(argv[i]) == 0)
-			new_env = ft_add(new_env, argv[i]);
+			g_minishell.envs = ft_add(g_minishell.envs, argv[i]);
 		i++;
 	}
-	return (new_env);
 }
 
 /*

@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:17:24 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/10 16:05:07 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:20:27 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
 #include "minishell.h"
-#include "libft.h"
 
-char	**get_env(char **env)
+char	**get_env()
 {
 	int	i;
 	char	**new_env;
 
-	new_env = malloc((get_taille(env) + 1) * sizeof(char *));
+	new_env = malloc((get_size(env) + 1) * sizeof(char *));
 	i = -1;
 	while (env[++i])
 		new_env[i] = ft_strdup(env[i]);

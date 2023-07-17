@@ -3,27 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 17:19:03 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/13 17:38:35 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:19:06 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
 #include "minishell.h"
-#include "libft.h"
 
-void	ft_echo(char **arg)
+int	echo_builtin(int argc, char **argv)
 {
 
-	if (arg[0][0] == '-' && arg[0][1] == 'n')
-		ft_putstr(arg[1]);
+	if (argv[0][0] == '-' && argv[0][1] == 'n')
+	{
+		ft_putstr(argv[1]);
+	}
 	else
 	{
-		ft_putstr(arg[0]);
+		ft_putstr(argv[0]);
 		write(1, "\n", 1);
 	}
+	return (0);
 }
 
 /*

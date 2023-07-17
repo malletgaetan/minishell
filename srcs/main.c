@@ -34,6 +34,8 @@ static int	interpret(char *line, char **env)
 		gc_clean(&(g_minishell.gcan));
 		return (2);
 	}
+	if (g_minishell.token == NULL)
+		return (0);
 	err = ex_cmds(env);
 	gc_clean(&(g_minishell.gcan));
 	if (err != OK)

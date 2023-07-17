@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   right_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 18:17:29 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/13 18:22:26 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:42:44 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gc.h"
 #include "minishell.h"
-#include "libft.h"
 
 char	*find_path(char **env)
 {
