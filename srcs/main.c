@@ -3,11 +3,12 @@
 t_minishell	g_minishell;
 
 
-static void	init_minishell(void)
+static void	init_minishell(char **env)
 {
 	g_minishell.bad_token = NULL;
 	g_minishell.token = NULL;
 	g_minishell.old_status = 0;
+	get_env(env);
 	gc_init(&(g_minishell.gcan));
 }
 
@@ -89,7 +90,7 @@ int	main(int argc, char **argv, char **env)
 {
 	int	err;
 
-	init_minishell();
+	init_minishell(env);
 	if (argc == 1)
 		err = interpret_loop(env);
 	else

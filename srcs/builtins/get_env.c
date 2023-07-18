@@ -12,15 +12,13 @@
 
 #include "minishell.h"
 
-char	**get_env()
+void	get_env(char **env)
 {
 	int	i;
-	char	**new_env;
 
-	new_env = malloc((get_size(env) + 1) * sizeof(char *));
+	new_env = gc_malloc(&(g_minishell.gcan), (get_size(env) + 1) * sizeof(char *));
 	i = -1;
 	while (env[++i])
-		new_env[i] = ft_strdup(env[i]);
-	new_env[i] = 0;
-	return (new_env);
+		g_minishell.envs[i] = ft_strdup(env[i]);// rajouter les strdup a gcan
+	g_minishell.envs[i] = 0;
 }

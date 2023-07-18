@@ -42,7 +42,7 @@ int	verif(char *str)
 	return (1);
 }
 
-int	export_builtin(int argc, char **argv)
+int	export_builtin(char **argv)
 {
 	int	i;
 

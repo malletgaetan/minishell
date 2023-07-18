@@ -14,7 +14,7 @@
 
 void	exit_builtin(void)
 {
-	kill_all_child();
+	kill_all_childs();
 	gc_clean(&(g_minishell.gcan));
 	exit(0);
 }

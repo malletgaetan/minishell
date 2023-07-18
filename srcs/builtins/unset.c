@@ -18,7 +18,7 @@ char	**suppr(char **env, char *argv)
 	int		i;
 	int		j;
 
-	new_env = malloc(get_size((env) + 1) * sizeof(char *));
+	new_env = gc_malloc(&(g_minishell.gcan), get_size((env) + 1) * sizeof(char *));
 	i = 0;
 	j = 0;
 	while (env[i])
@@ -28,18 +28,17 @@ char	**suppr(char **env, char *argv)
 		i++;
 	}
 	new_env[i] = 0;
-	free(env);
+	gc_free(&(g_minishell.gcan), (void **)&env);
 	return (new_env);
 }
 
-char	**ft_unset(int argc, char **argv)
+void	ft_unset(char **argv)
 {
 	int	i;
 
 	i = 1;
 	while (argv[i])
-		new_env = suppr(new_env, argv[i++]);
-	return (new_env);
+		g_minishell.envs = suppr(g_minishell.envs, argv[i++]);
 }
 
 /*

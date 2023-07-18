@@ -86,6 +86,7 @@ typedef struct s_minishell
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
 	struct sigaction	sa_term;
+	char		**envs;
 }	t_minishell;
 
 typedef struct s_cmd
