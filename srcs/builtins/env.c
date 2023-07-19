@@ -3,20 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 15:16:02 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/10 15:17:13 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 19:14:31 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test.h"
+#include "minishell.h"
 
-void	env(char **env)
+int	env_builtin(void)
 {
 	int	i;
 
 	i = 0;
-	while (env[i])
-		printf("%s\n", env[i++]);
+	while (g_minishell.envs[i])
+		printf("%s\n", g_minishell.envs[i++]);
+	return (0);
 }

@@ -34,7 +34,7 @@ int	close_zero(int *fd)
 
 size_t	get_nb_args(t_token *token)
 {
-	size_t	c;
+	int	c;
 
 	c = 0;
 	while (token && token->type != PIPE)
@@ -50,4 +50,17 @@ size_t	get_nb_args(t_token *token)
 			token = token->next;
 	}
 	return (c);
+}
+
+int	is_unpiped_builtin(char *cmd)
+{
+	if (!strncmp(cmd, "cd"))
+		return (1);
+	if (!strcmp(cmd, "export"))
+		return (1);
+	if (!strcmp(cmd, "unset"))
+		return (1);
+	if (!strcmp(cmd, "exit"))
+		return (1);
+	return (0);
 }

@@ -15,9 +15,9 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
+# include <stdio.h>
 # include <stdint.h>
 # include "libft.h"
-# include "ft_printf.h"
 # include "gc.h"
 
 // TODO create lexer.h
@@ -79,6 +79,7 @@ typedef struct s_minishell
 	t_token		*bad_token;
 	char		buf[BUF_SIZE];
 	t_gcan		gcan;
+	t_gcan		gcenv;
 	int			*pids;
 	int			sigint;
 	uint32_t	nb_cmds;
@@ -86,12 +87,13 @@ typedef struct s_minishell
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
 	struct sigaction	sa_term;
+	char		**envs;
 }	t_minishell;
 
 typedef struct s_cmd
 {
 	char	**args;
-	size_t	arg_len;
+	int		arg_len;
 	int		pipeout[2];
 	int		pipein[2];
 	int		redirout_type;
@@ -111,6 +113,8 @@ int		file_to_pipe(char *filefrom, int fdto);
 int		file_to_pipe(char *filefrom, int fdto);
 int		exec_next_cmd(t_token *token, int pipereadfd, int depth);
 int		ex_cmds(void);
+int		exec_simple_builtin(void);
+int		is_unpiped_builtin(char *cmd);
 
 // signals
 void	sigint(int code);
@@ -119,4 +123,16 @@ void	sigterm(int code);
 void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*h)(int));
 void	setup_sigactions(void);
 
+// builtin et path
+int		cd_builtin(int argc, char **argv);
+int		echo_builtin(int argc, char **argv);
+int		export_builtin(int argc, char **argv);
+int		unset_builtin(int argc, char **argv);
+int		env_builtin(void);
+int		exit_builtin(void);
+int		pwd_builtin(void);
+char    **ft_split_path(const char *s, char c);
+char	**get_env(char **env);
+char	*right_path(char *cmd, char **env);
+int	get_size(char **env);
 #endif

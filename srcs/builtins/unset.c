@@ -3,32 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/11 16:23:30 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/11 16:41:01 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/17 19:14:52 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "test.h"
-
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (s1[i] && i < n)
-	{
-		if (s1[i] != s2[i])
-			return (-1);
-		i++;
-	}
-	if (s2[i] && i < n)
-		return (-1);
-	return (0);
-}
+#include "minishell.h"
 
 char	**suppr(char **env, char *argv)
 {
@@ -36,7 +18,7 @@ char	**suppr(char **env, char *argv)
 	int		i;
 	int		j;
 
-	new_env = malloc((get_taille(env) + 1) * sizeof(char *));
+	new_env = gc_malloc(&(g_minishell.gcenv), get_size((env) + 1) * sizeof(char *));
 	i = 0;
 	j = 0;
 	while (env[i])
@@ -46,18 +28,17 @@ char	**suppr(char **env, char *argv)
 		i++;
 	}
 	new_env[i] = 0;
-	free(env);
+	gc_free(&(g_minishell.gcenv), (void **)&env);
 	return (new_env);
 }
 
-char	**unset(char **new_env, char **argv)
+void	ft_unset(char **argv)
 {
 	int	i;
 
 	i = 1;
 	while (argv[i])
-		new_env =suppr(new_env, argv[i++]);
-	return (new_env);
+		g_minishell.envs = suppr(g_minishell.envs, argv[i++]);
 }
 
 /*

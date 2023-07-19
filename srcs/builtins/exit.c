@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/13 17:39:31 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/14 18:09:16 by gmallet          ###   ########.fr       */
+/*   Updated: 2023/07/17 19:14:24 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	clean_env(char **env)
+void	exit_builtin(void)
 {
-	int	i;
-
-	i = 0;
-	while (env[i])
-		free(env[i++]);
-	free(env);
-}
-
-void	ft_exit(char **env)
-{
-	clean_env(env);
-	kill_all_childs(SIGKILL, 0);
-	wait_all_childs();
+	kill_all_childs();
 	gc_clean(&(g_minishell.gcan));
 	exit(0);
 }

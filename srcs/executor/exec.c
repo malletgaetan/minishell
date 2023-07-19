@@ -1,7 +1,6 @@
 #include "minishell.h"
 
-
-int	ex_cmds(void)
+int	exec_cmds(void)
 {
 	int		err;
 	uint32_t	i;

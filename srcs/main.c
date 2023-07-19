@@ -3,25 +3,27 @@
 t_minishell	g_minishell;
 
 
-static void	init_minishell(void)
+static void	init_minishell(char **env)
 {
 	g_minishell.bad_token = NULL;
 	g_minishell.token = NULL;
 	g_minishell.old_status = 0;
 	gc_init(&(g_minishell.gcan));
+	gc_init(&(g_minishell.gcenv));
+	get_env(env);
 }
 
 void	handle_lexer_error(int err)
 {
 	if (err == LEXER_MALLOC_ERROR)
-		ft_printf("minishell: unexpected error\n");
+		printf("minishell: unexpected error\n");
 	else if (err == LEXER_SYNTAX_ERROR)
-		ft_printf("minishell: syntax errror near unexpected token `%s'\n", g_minishell.bad_token->value);
+		printf("minishell: syntax errror near unexpected token `%s'\n", g_minishell.bad_token->value);
 	else if (err == LEXER_QUOTE_ERROR)
-		ft_printf("minishell: quotes doesn't guard\n");
+		printf("minishell: quotes doesn't guard\n");
 }
 
-static int	interpret(char *line)
+static int	interpret(char *line, char **env)
 {
 	int	err;
 
@@ -32,19 +34,23 @@ static int	interpret(char *line)
 	{
 		handle_lexer_error(err);
 		gc_clean(&(g_minishell.gcan));
+		gc_clean(&(g_minishell.gcenv));
 		return (2);
 	}
-	err = ex_cmds();
+	if (g_minishell.token == NULL)
+		return (0);
+	err = exec();
 	gc_clean(&(g_minishell.gcan));
+	gc_clean(&(g_minishell.gcenv));
 	if (err != OK)
 	{
-		ft_printf("minishell: hardfail error: %s\n", strerror(errno));
+		printf("minishell: hardfail error: %s\n", strerror(errno));
 		return (1);
 	}
 	return (0);
 }
 
-static int	interpret_loop(void)
+static int	interpret_loop(char **env)
 {
 	char	*line;
 	int	err;
@@ -72,25 +78,27 @@ static int	interpret_loop(void)
 		free(line);
 		if (g_minishell.token == NULL)
 			continue ;
-		err = ex_cmds(); 
+		err = exec(); 
 		gc_clean(&(g_minishell.gcan));
 		if (err != OK)
 		{
-			ft_printf("minishell: hardfail error: %s\n", strerror(errno));
+			printf("minishell: hardfail error: %s\n", strerror(errno));
+			gc_clean(&(g_minishell.gcenv));
 			return (1);
 		}
 	}
+	gc_clean(&(g_minishell.gcenv));
 	return (OK);
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
 	int	err;
 
-	init_minishell();
+	init_minishell(env);
 	if (argc == 1)
-		err = interpret_loop();
+		err = interpret_loop(env);
 	else
-		err = interpret(argv[1]);
+		err = interpret(argv[1], env);
 	return (err);
 }
