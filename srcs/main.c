@@ -3,14 +3,16 @@
 t_minishell	g_minishell;
 
 
-static void	init_minishell(char **env)
+static int	init_minishell(char **env)
 {
 	g_minishell.bad_token = NULL;
 	g_minishell.token = NULL;
 	g_minishell.old_status = 0;
 	gc_init(&(g_minishell.gcan));
 	gc_init(&(g_minishell.gcenv));
-	get_env(env);
+	if (get_env(env))
+		return (1);
+	return (0);
 }
 
 void	handle_lexer_error(int err)
@@ -23,7 +25,7 @@ void	handle_lexer_error(int err)
 		printf("minishell: quotes doesn't guard\n");
 }
 
-static int	interpret(char *line, char **env)
+static int	interpret(char *line)
 {
 	int	err;
 
@@ -50,7 +52,7 @@ static int	interpret(char *line, char **env)
 	return (0);
 }
 
-static int	interpret_loop(char **env)
+static int	interpret_loop(void)
 {
 	char	*line;
 	int	err;
@@ -95,10 +97,14 @@ int	main(int argc, char **argv, char **env)
 {
 	int	err;
 
-	init_minishell(env);
+	if (init_minishell(env))
+	{
+		printf("minishell: hardfail error: %s\n", strerror(errno));
+		return (1);
+	}
 	if (argc == 1)
-		err = interpret_loop(env);
+		err = interpret_loop();
 	else
-		err = interpret(argv[1], env);
+		err = interpret(argv[1]);
 	return (err);
 }

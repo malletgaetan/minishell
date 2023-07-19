@@ -12,13 +12,16 @@
 
 #include "minishell.h"
 
-void	get_env(char **env)
+int	get_env(char **env)
 {
 	int	i;
 
-	new_env = gc_malloc(&(g_minishell.gcenv), (get_size(env) + 1) * sizeof(char *));
+	g_minishell.envs = gc_malloc(&(g_minishell.gcenv), (get_size(env) + 1) * sizeof(char **));
+	if (g_minishell.envs == NULL)
+		return (1);
 	i = -1;
 	while (env[++i])
 		g_minishell.envs[i] = gc_strdup(env[i]);
-	g_minishell.envs[i] = 0;
+	g_minishell.envs[i] = NULL;
+	return (0);
 }

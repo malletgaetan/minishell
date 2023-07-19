@@ -58,7 +58,7 @@ int	exec(void)
 
 	cmd = next_cmd_name();
 	// nb_cmds == 1 && is in (export, cd, unset, exit) => exec_simple_builtin
-	if (is_nonpiped_builtin(cmd))
-		return (exec_nonpiped_builtin());
+	if (is_unpiped_builtin(cmd))
+		return (exec_unpiped_builtin());
 	return (exec_cmds());
 }

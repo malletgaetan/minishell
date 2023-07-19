@@ -32,13 +32,16 @@ char	**suppr(char **env, char *argv)
 	return (new_env);
 }
 
-void	ft_unset(char **argv)
+int		unset_builtin(int argc, char **argv)
 {
 	int	i;
 
+	if (argc == 1)
+		return (0);
 	i = 1;
 	while (argv[i])
 		g_minishell.envs = suppr(g_minishell.envs, argv[i++]);
+	return (0);
 }
 
 /*

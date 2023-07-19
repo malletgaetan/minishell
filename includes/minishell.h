@@ -112,8 +112,8 @@ int		pipe_to_file(int fdfrom, char *fileto, int redirtype);
 int		file_to_pipe(char *filefrom, int fdto);
 int		file_to_pipe(char *filefrom, int fdto);
 int		exec_next_cmd(t_token *token, int pipereadfd, int depth);
-int		ex_cmds(void);
-int		exec_simple_builtin(void);
+int		exec(void);
+int		exec_unpiped_builtin(void);
 int		is_unpiped_builtin(char *cmd);
 
 // signals
@@ -129,10 +129,11 @@ int		echo_builtin(int argc, char **argv);
 int		export_builtin(int argc, char **argv);
 int		unset_builtin(int argc, char **argv);
 int		env_builtin(void);
-int		exit_builtin(void);
+void	exit_builtin(void);
 int		pwd_builtin(void);
 char    **ft_split_path(const char *s, char c);
-char	**get_env(char **env);
+int		get_env(char **env);
 char	*right_path(char *cmd, char **env);
-int	get_size(char **env);
+int		get_size(char **env);
+char	*gc_strdup(char *str);
 #endif
