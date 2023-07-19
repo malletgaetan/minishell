@@ -33,6 +33,8 @@ char	*right_path(char *cmd, char **env)
 	char	*newenv;
 	int		x;
 
+	if (*cmd == '/' || *cmd == '.')
+		return (cmd);
 	newenv = find_path(env);
 	tab_path = ft_split_path(newenv, ':');
 	x = 0;

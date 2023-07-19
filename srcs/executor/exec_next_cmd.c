@@ -41,7 +41,7 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 		}
 		(*token) = (*token)->next;
 	}
-	if ((*token)->type == PIPE)
+	if ((*token) && ((*token)->type == PIPE))
 		(*token) = (*token)->next;
 	cmd->args[arg_i] = NULL;
 	return (OK);
