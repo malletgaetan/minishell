@@ -19,14 +19,15 @@ char	*new_shlvl(char *str, int nb)
 	int		i;
 	int		j;
 
-	final = gc_malloc(&(g_minishell.gcenv), 100);
+	n = ft_itoa(nb);
+	final = gc_malloc(&(g_minishell.gcenv), ft_strlen(str) + ft_strlen(n));
 	i = -1;
 	while (str[++i])
 		final[i] = str[i];
-	n = ft_itoa(nb);
 	j = 0;
 	while (n[j])
 		final[i++] = n[j++];
+	final[i] = '\0';
 	free(n);
 	return (final);
 }
