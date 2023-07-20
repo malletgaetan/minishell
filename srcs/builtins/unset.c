@@ -14,7 +14,7 @@
 
 char	**suppr(char **env, char *argv)
 {
-	char **new_env;
+	char	**new_env;
 	int		i;
 	int		j;
 
@@ -32,7 +32,7 @@ char	**suppr(char **env, char *argv)
 	return (new_env);
 }
 
-int		unset_builtin(int argc, char **argv)
+int	unset_builtin(int argc, char **argv)
 {
 	int	i;
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_next_cmd.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:38:10 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/20 16:38:11 by tbatteux         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	setup_cmd(t_cmd *cmd, t_token **token)
@@ -114,7 +126,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 	t_cmd	cmd;
 	char	*path;
 	int		err;
-	
+
 	if (token == NULL)
 		return (OK);
 	ft_memset(&cmd, 0, sizeof(t_cmd));

@@ -1,7 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:28:06 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/20 16:28:07 by tbatteux         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_minishell	g_minishell;
-
 
 static int	init_minishell(char **env)
 {
@@ -56,8 +67,8 @@ static int	interpret(char *line)
 static int	interpret_loop(void)
 {
 	char	*line;
-	int	err;
-	
+	int		err;
+
 	while (42)
 	{
 		g_minishell.sigint = 0;
@@ -78,7 +89,7 @@ static int	interpret_loop(void)
 		free(line);
 		if (g_minishell.token == NULL)
 			continue ;
-		err = exec(); 
+		err = exec();
 		gc_clean(&(g_minishell.gcan));
 		if (err != OK)
 		{

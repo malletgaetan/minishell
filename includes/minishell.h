@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:18:25 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/20 16:18:31 by tbatteux         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -76,25 +88,25 @@ enum e_status
 	STATUS_RUNNING,
 };
 
-typedef struct sigaction t_sigaction;
+typedef struct sigaction	t_sigaction;
 
 typedef struct s_minishell
 {
-	int			old_status;
-	t_token		*token;
-	t_token		*bad_token;
-	char		buf[BUF_SIZE];
-	t_gcan		gcan;
-	t_gcan		gcenv;
-	int			*pids;
-	int			sigint;
-	uint32_t	nb_cmds;
-	int			last_pid;
+	int					old_status;
+	int					sigint;
+	int					*pids;
+	int					last_pid;
+	uint32_t			nb_cmds;
+	char				buf[BUF_SIZE];
+	char				**envs;
+	t_token				*token;
+	t_token				*bad_token;
+	t_gcan				gcan;
+	t_gcan				gcenv;
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
 	struct sigaction	sa_term;
 	enum e_status		status;
-	char		**envs;
 }	t_minishell;
 
 typedef struct s_cmd
@@ -107,7 +119,7 @@ typedef struct s_cmd
 	char	*redirout_file;
 }	t_cmd;
 
-extern t_minishell	g_minishell;
+extern t_minishell			g_minishell;
 
 // TODO create exector.h
 void	kill_all_childs(int sig, uint32_t start);
@@ -126,10 +138,11 @@ int		is_unpiped_builtin(char *cmd);
 int		is_piped_builtin(char *cmd);
 
 // signals
+// modif struct sigaction -> t_sigaction (dans setup_sigaction)
 void	sigint(int code);
 void	sigquit(int code);
 void	sigterm(int code);
-void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*h)(int));
+void	setup_sigaction(t_sigaction *sa, int sig, int flags, void (*h)(int));
 void	setup_sigactions(void);
 
 // builtin
@@ -140,12 +153,12 @@ int		unset_builtin(int argc, char **argv);
 int		env_builtin(void);
 void	exit_builtin(void);
 int		pwd_builtin(void);
-char    **ft_split_path(const char *s, char c);
+char	**ft_split_path(const char *s, char c);
 char	*right_path(char *cmd, char **env);
 int		get_size(char **env);
 char	*gc_strdup(char *str);
 
 // envs
 int		get_env_copy(char **env);
-char    *ms_getenv(char *envname);
+char	*ms_getenv(char *envname);
 #endif

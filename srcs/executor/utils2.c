@@ -1,33 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_utils.c                                     :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/20 16:45:22 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/20 16:45:23 by tbatteux         ###   ########.fr       */
+/*   Created: 2023/07/20 16:42:09 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/20 16:42:28 by tbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_isspace(char c)
+int	is_piped_builtin(char *cmd)
 {
-	return ((c == ' ') || ((c > 8) && (c < 14)));
-}
-
-int	ft_isoperator(char c)
-{
-	return ((c == '<') || (c == '>') || (c == '|') || (c == '&') || (c == '(') || (c == ')'));
-}
-
-int	ft_isquote(char c)
-{
-	return ((c == '\'') || (c == '\"'));
-}
-
-int	ft_isenv(char c)
-{
-	return (ft_isalpha(c) || ft_isdigit(c) || (c == '_'));
+	if (!strcmp(cmd, "echo"))
+		return (1);
+	if (!strcmp(cmd, "env"))
+		return (1);
+	if (!strcmp(cmd, "pwd"))
+		return (1);
+	return (0);
 }

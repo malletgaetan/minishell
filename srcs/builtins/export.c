@@ -37,7 +37,7 @@ int	verif(char *str)
 	while (str[i])
 	{
 		if (str[i] == '=' && ((str[i - 1] >= 'A' && str[i - 1] <= 'Z')
-		  		|| (str[i - 1] >= 'a' && str[i - 1] <= 'z')))
+				|| (str[i - 1] >= 'a' && str[i - 1] <= 'z')))
 			return (0);
 		i++;
 	}
@@ -46,7 +46,7 @@ int	verif(char *str)
 
 int	export_builtin(int argc, char **argv)
 {
-	int	i;
+	int		i;
 	char	**tmp;
 
 	i = 1;

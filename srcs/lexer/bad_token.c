@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   bad_token.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:43:48 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/20 16:43:50 by tbatteux         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static size_t	get_token_size(char *line)
@@ -28,12 +40,10 @@ static int	set_newline_token(t_token **token)
 	return (LEXER_SYNTAX_ERROR);
 }
 
-
 int	set_bad_token(char **line, t_token **token)
 {
 	size_t	tokensize;
 	char	*ptr;
-
 
 	tokensize = get_token_size(*line);
 	if (tokensize == 0)

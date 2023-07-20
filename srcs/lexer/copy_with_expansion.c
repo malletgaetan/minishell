@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   copy_with_expansion.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:44:56 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/20 16:44:59 by tbatteux         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 // TODO update it with new env variable array system
@@ -76,7 +88,7 @@ int	copy_with_expansion(char **line, char *word, int old_status)
 				continue ;
 			}
 			if (!(cpy_env(get_env_from_line(line), &word)))
-				continue;
+				continue ;
 		}
 		*word = **line;
 		++(*line);

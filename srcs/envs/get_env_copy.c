@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_env.c                                          :+:      :+:    :+:   */
+/*   get_env_copy.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,8 +16,8 @@ char	*new_shlvl(char *str, int nb)
 {
 	char	*final;
 	char	*n;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	final = gc_malloc(&(g_minishell.gcenv), 100);
 	i = -1;

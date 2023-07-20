@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:38:43 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/20 16:38:45 by tbatteux         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	wait_all_childs(void)
 {
 	uint32_t	i;
-	
+
 	i = 0;
 	if (g_minishell.pids == NULL)
 		return ;
@@ -64,7 +76,7 @@ int	is_unpiped_builtin(char *cmd)
 		return (1);
 	return (0);
 }
-
+/*
 int	is_piped_builtin(char *cmd)
 {
 	if (!strcmp(cmd, "echo"))
@@ -74,4 +86,4 @@ int	is_piped_builtin(char *cmd)
 	if (!strcmp(cmd, "pwd"))
 		return (1);
 	return (0);
-}
+}*/

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   operator_token.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:45:14 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/20 16:45:15 by tbatteux         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static enum e_type	redir_out_type(char **line)
@@ -24,7 +36,7 @@ static void	cpytoken(char *to, char **line)
 int	set_operator_token(char **line, t_token **token)
 {
 	enum e_type	type;
-	int		err;
+	int			err;
 
 	err = 0;
 	if ((**line) == '<')

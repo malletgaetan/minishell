@@ -25,12 +25,11 @@ void	ft_update_env(void)
 			break ;
 		i++;
 	}
-	gc_free(&(g_minishell.gcenv), (void **)&(g_minishell.envs[i])); // free un seul maillon ?
+	gc_free(&(g_minishell.gcenv), (void **)&(g_minishell.envs[i]));
 	g_minishell.envs[i] = buf;
 }
 
-
-int		cd_builtin(int argc, char **argv)
+int	cd_builtin(int argc, char **argv)
 {
 	if (argc == 1)
 		return (0);

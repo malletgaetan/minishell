@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fd_manual_pipe.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/07/20 16:38:36 by tbatteux          #+#    #+#             */
+/*   Updated: 2023/07/20 16:38:38 by tbatteux         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	fd_manual_pipe(int fdfrom, int fdto, char *delim)
 {
 	ssize_t	ret;
-	
+
 	ret = read(fdfrom, g_minishell.buf, BUF_SIZE);
 	while (ret != 0)
 	{
