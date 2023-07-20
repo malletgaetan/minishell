@@ -6,7 +6,7 @@
 /*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:28:06 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/20 16:28:07 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/20 17:05:27 by tbatteux         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,10 @@ static int	interpret_loop(void)
 			free(line);
 			continue ;
 		}
-		free(line);
 		if (g_minishell.token == NULL)
 			continue ;
+		add_history(line);
+		free(line);
 		err = exec();
 		gc_clean(&(g_minishell.gcan));
 		if (err != OK)
