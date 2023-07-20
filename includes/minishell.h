@@ -138,7 +138,6 @@ int		is_unpiped_builtin(char *cmd);
 int		is_piped_builtin(char *cmd);
 
 // signals
-// modif struct sigaction -> t_sigaction (dans setup_sigaction)
 void	sigint(int code);
 void	sigquit(int code);
 void	sigterm(int code);
