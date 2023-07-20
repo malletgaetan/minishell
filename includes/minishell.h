@@ -70,6 +70,12 @@ enum e_error
 	SOFTFAIL_ERROR,
 };
 
+enum e_status
+{
+	STATUS_IDLE,
+	STATUS_RUNNING,
+};
+
 typedef struct sigaction t_sigaction;
 
 typedef struct s_minishell
@@ -87,6 +93,7 @@ typedef struct s_minishell
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
 	struct sigaction	sa_term;
+	enum e_status		status;
 	char		**envs;
 }	t_minishell;
 

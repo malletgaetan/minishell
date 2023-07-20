@@ -3,6 +3,11 @@
 void	sigint(int code)
 {
 	(void)code;
+	if (g_minishell.status == STATUS_IDLE)
+	{
+		printf("\b\b\nminishell$>");
+		return ;
+	}
 	g_minishell.sigint = 1;
 }
 

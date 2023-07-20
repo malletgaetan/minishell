@@ -10,6 +10,7 @@ static int	init_minishell(char **env)
 	g_minishell.old_status = 0;
 	gc_init(&(g_minishell.gcan));
 	gc_init(&(g_minishell.gcenv));
+	setup_sigactions();
 	if (get_env(env))
 		return (1);
 	return (0);
@@ -61,14 +62,11 @@ static int	interpret_loop(void)
 	{
 		g_minishell.sigint = 0;
 		g_minishell.token = NULL;
+		g_minishell.status = STATUS_IDLE;
 		line = readline("minishell$>");
+		g_minishell.status = STATUS_RUNNING;
 		if (line == NULL)
 			break ;
-		if (g_minishell.sigint != 0)
-		{
-			free(line);
-			continue ;
-		}
 		err = lex(line, &(g_minishell.token), &(g_minishell.bad_token), g_minishell.old_status);
 		if (err != LEXER_OK)
 		{
