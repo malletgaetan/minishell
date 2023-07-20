@@ -5,7 +5,7 @@ void	sigint(int code)
 	(void)code;
 	if (g_minishell.status == STATUS_IDLE)
 	{
-		printf("\b\b\nminishell$>");
+		ft_putstr_fd("\nminishell$>", STDERR_FILENO);
 		return ;
 	}
 	g_minishell.sigint = 1;
@@ -14,11 +14,7 @@ void	sigint(int code)
 void	sigquit(int code)
 {
 	(void)code;
-}
-
-void	sigterm(int code)
-{
-	(void)code;
+	ft_putstr_fd("\b\b  \b\b", STDERR_FILENO);
 }
 
 void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*h)(int))
@@ -32,7 +28,7 @@ void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*h)(int))
 void	setup_sigactions(void)
 {
 	setup_sigaction(&(g_minishell.sa_int), SIGINT, SA_RESTART, sigint);
-	setup_sigaction(&(g_minishell.sa_quit), SIGQUIT, SA_RESTART, sigint);
-	setup_sigaction(&(g_minishell.sa_term), SIGTERM, SA_RESTART, sigint);
+	setup_sigaction(&(g_minishell.sa_quit), SIGQUIT, SA_RESTART, sigquit);
 }
+
 
