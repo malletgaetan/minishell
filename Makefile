@@ -23,7 +23,7 @@ $(LIBFTDIR)/$(LIBFT):
 	make -C $(LIBFTDIR)
 
 $(NAME): $(SRCS) $(LIBFTDIR)/$(LIBFT) $(LIBGCDIR)/$(LIBGC)
-	$(CC) $(CFLAGS) $(SRCS) -o $(NAME) $(LIBFTFLAGS) $(LIBGCFLAGS) -lreadline -g
+	$(CC) $(CFLAGS) $(SRCS) -o $(NAME) $(LIBFTFLAGS) $(LIBGCFLAGS) -lreadline -g -fsanitize=address -fno-omit-frame-pointer
 
 clean:
 	$(RM) $(NAME)

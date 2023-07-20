@@ -87,7 +87,10 @@ static int	interpret_loop(void)
 			continue ;
 		}
 		if (g_minishell.token == NULL)
+		{
+			free(line);
 			continue ;
+		}
 		add_history(line);
 		free(line);
 		err = exec();
