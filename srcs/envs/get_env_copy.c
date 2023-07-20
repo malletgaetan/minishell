@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	get_env(char **env)
+int	get_env_copy(char **env)
 {
 	int	i;
 

@@ -132,7 +132,7 @@ void	sigterm(int code);
 void	setup_sigaction(struct sigaction *sa, int sig, int flags, void (*h)(int));
 void	setup_sigactions(void);
 
-// builtin et path
+// builtin
 int		cd_builtin(int argc, char **argv);
 int		echo_builtin(int argc, char **argv);
 int		export_builtin(int argc, char **argv);
@@ -141,8 +141,11 @@ int		env_builtin(void);
 void	exit_builtin(void);
 int		pwd_builtin(void);
 char    **ft_split_path(const char *s, char c);
-int		get_env(char **env);
 char	*right_path(char *cmd, char **env);
 int		get_size(char **env);
 char	*gc_strdup(char *str);
+
+// envs
+int		get_env_copy(char **env);
+char    *ms_getenv(char *envname);
 #endif

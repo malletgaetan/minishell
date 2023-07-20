@@ -11,7 +11,7 @@ static int	init_minishell(char **env)
 	gc_init(&(g_minishell.gcan));
 	gc_init(&(g_minishell.gcenv));
 	setup_sigactions();
-	if (get_env(env))
+	if (get_env_copy(env))
 		return (1);
 	return (0);
 }

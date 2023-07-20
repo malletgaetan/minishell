@@ -70,7 +70,7 @@ int	main(int argc, char **argv, char **env)
 	char	**new_env;
 	int		i;
 
-	new_env = get_env(new_env, env);
+	new_env = get_env_copy(new_env, env);
 	new_env = export(new_env, argv);
 	i = 0;
 	while (new_env[i])

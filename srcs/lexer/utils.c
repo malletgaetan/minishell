@@ -11,7 +11,7 @@ char	*get_env_from_line(char **line)
 		++i;
 	tmp = (*line)[i];
 	(*line)[i] = '\0';
-	env = getenv(*line);
+	env = ms_getenv(*line);
 	(*line)[i] = tmp;
 	(*line) += i;
 	return (env);
