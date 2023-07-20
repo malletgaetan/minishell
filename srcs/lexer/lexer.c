@@ -29,6 +29,8 @@ int	lex(char *line, t_token **token, t_token **bad_token, int old_status)
 	while (*line)
 	{
 		ft_skipspaces(&line);
+		if (*line == '\0')
+			break ;
 		if (ft_isoperator(*line))
 		{
 			if (last_type != WORD)
