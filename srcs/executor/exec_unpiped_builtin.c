@@ -28,12 +28,14 @@ int	exec_unpiped_builtin(void)
 	cmd.arg_len = get_nb_args(g_minishell.token);
 	if (setup_cmd(&cmd, g_minishell.token))
 		return (HARDFAIL_ERROR);
-	if (strcmp(cmd.args[0], "export"))
+	if (!strcmp(cmd.args[0], "export"))
 		return (export_builtin(cmd.arg_len, cmd.args));
-	else if (strcmp(cmd.args[0], "cd"))
+	else if (!strcmp(cmd.args[0], "cd"))
 		return (cd_builtin(cmd.arg_len, cmd.args));
-	else if (strcmp(cmd.args[0], "unset"))
+	else if (!strcmp(cmd.args[0], "unset"))
 		return (unset_builtin(cmd.arg_len, cmd.args));
+	else if (!strcmp(cmd.args[0], "exit"))
+		exit_builtin();
 	else
 		printf("minishell: bug error: didn't recognize cmd\n");
 	return (0);
