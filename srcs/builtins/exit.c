@@ -14,7 +14,6 @@
 
 void	exit_builtin(void)
 {
-	printf("in exit\n");
 	kill_all_childs(SIGKILL, 0);
 	wait_all_childs();
 	gc_clean(&(g_minishell.gcan));
