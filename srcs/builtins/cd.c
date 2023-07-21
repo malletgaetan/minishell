@@ -26,7 +26,6 @@ void	ft_update_env(void)
 			break ;
 		i++;
 	}
-	// gc_free(&(g_minishell.gcenv), (void **)&(g_minishell.envs[i])); nasty fix
 	g_minishell.envs[i] = buf;
 }
 
