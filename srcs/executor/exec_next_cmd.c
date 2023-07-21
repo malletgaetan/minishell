@@ -150,7 +150,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 		if (is_piped_builtin(cmd.args[0]))
 			return (exec_piped_builtin(cmd.arg_len, cmd.args));
 		path = right_path(cmd.args[0], g_minishell.envs);
-		execve(path, cmd.args + 1, g_minishell.envs);
+		execve(path, cmd.args, g_minishell.envs);
 		return (errno); // TODO handle error in waitpid
 	}
 	if (g_minishell.pids[depth] == -1)
