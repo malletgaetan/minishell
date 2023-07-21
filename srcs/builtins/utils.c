@@ -30,7 +30,7 @@ char	*gc_strdup(char *str)
 	if (str == NULL)
 		return (NULL);
 	i = 0;
-	ret = gc_malloc(&(g_minishell.gcenv), (ft_strlen(str) + 1));
+	ret = gc_malloc(&(g_ms.gcenv), (ft_strlen(str) + 1));
 	if (ret == NULL)
 		return (NULL);
 	while (str[i])

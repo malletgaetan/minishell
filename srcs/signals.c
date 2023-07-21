@@ -15,12 +15,12 @@
 void	sigint(int code)
 {
 	(void)code;
-	if (g_minishell.status == STATUS_IDLE)
+	if (g_ms.status == STATUS_IDLE)
 	{
 		ft_putstr_fd("\nminishell$>", STDERR_FILENO);
 		return ;
 	}
-	g_minishell.sigint = 1;
+	g_ms.sigint = 1;
 }
 
 void	sigquit(int code)
@@ -39,6 +39,6 @@ void	setup_sigaction(t_sigaction *sa, int sig, int flags, void (*h)(int))
 
 void	setup_sigactions(void)
 {
-	setup_sigaction(&(g_minishell.sa_int), SIGINT, SA_RESTART, sigint);
-	setup_sigaction(&(g_minishell.sa_quit), SIGQUIT, SA_RESTART, sigquit);
+	setup_sigaction(&(g_ms.sa_int), SIGINT, SA_RESTART, sigint);
+	setup_sigaction(&(g_ms.sa_quit), SIGQUIT, SA_RESTART, sigquit);
 }

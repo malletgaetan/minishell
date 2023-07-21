@@ -17,7 +17,7 @@ int	env_builtin(void)
 	int	i;
 
 	i = 0;
-	while (g_minishell.envs[i])
-		printf("%s\n", g_minishell.envs[i++]);
+	while (g_ms.envs[i])
+		printf("%s\n", g_ms.envs[i++]);
 	return (0);
 }

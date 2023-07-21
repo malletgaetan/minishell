@@ -24,7 +24,7 @@ static size_t	get_token_size(char *line)
 
 static int	set_newline_token(t_token **token)
 {
-	(*token) = gc_malloc(&(g_minishell.gcan), sizeof(t_token) + (8 * sizeof(char)));
+	(*token) = gc_malloc(&(g_ms.gcan), sizeof(t_token) + (8 * sizeof(char)));
 	if ((*token) == NULL)
 		return (LEXER_MALLOC_ERROR);
 	(*token)->type = BAD;
@@ -48,7 +48,7 @@ int	set_bad_token(char **line, t_token **token)
 	tokensize = get_token_size(*line);
 	if (tokensize == 0)
 		return (set_newline_token(token));
-	(*token) = gc_malloc(&(g_minishell.gcan), sizeof(t_token) + (sizeof(char) * (tokensize + 1)));
+	(*token) = gc_malloc(&(g_ms.gcan), sizeof(t_token) + (1 * (tokensize + 1)));
 	if ((*token) == NULL)
 		return (LEXER_MALLOC_ERROR);
 	(*token)->type = BAD;

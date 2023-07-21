@@ -46,11 +46,11 @@ int	set_operator_token(char **line, t_token **token)
 	else if ((**line) == '|')
 	{
 		type = PIPE;
-		g_minishell.nb_cmds += 1;
+		g_ms.nb_cmds += 1;
 	}
 	else
 		err = LEXER_SYNTAX_ERROR;
-	(*token) = gc_malloc(&(g_minishell.gcan), sizeof(t_token) + (sizeof(char) * 3));
+	(*token) = gc_malloc(&(g_ms.gcan), sizeof(t_token) + (sizeof(char) * 3));
 	if ((*token) == NULL)
 		return (LEXER_MALLOC_ERROR);
 	cpytoken((*token)->value, line);

@@ -17,7 +17,7 @@ char	**ft_add(char **env, char *arg)
 	char	**new_env;
 	int		i;
 
-	new_env = gc_malloc(&(g_minishell.gcenv), (get_size(env) + 2) * sizeof(char *));
+	new_env = gc_malloc(&(g_ms.gcenv), (get_size(env) + 2) * sizeof(char *));
 	if (new_env == NULL)
 		return (NULL);
 	i = -1;
@@ -25,7 +25,7 @@ char	**ft_add(char **env, char *arg)
 		new_env[i] = env[i];
 	new_env[i] = gc_strdup(arg);
 	new_env[i + 1] = 0;
-	gc_free(&(g_minishell.gcenv), (void **)&env);
+	gc_free(&(g_ms.gcenv), (void **)&env);
 	return (new_env);
 }
 
@@ -54,10 +54,10 @@ int	export_builtin(int argc, char **argv)
 	{
 		if (verif(argv[i]) == 0)
 		{
-			tmp = ft_add(g_minishell.envs, argv[i]);
+			tmp = ft_add(g_ms.envs, argv[i]);
 			if (tmp == NULL)
 				return (1);
-			g_minishell.envs = tmp;
+			g_ms.envs = tmp;
 		}
 		i++;
 	}

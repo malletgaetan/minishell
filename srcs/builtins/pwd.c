@@ -16,12 +16,12 @@ int	pwd_builtin(void)
 {
 	char	*buf;
 
-	buf = gc_malloc(&(g_minishell.gcan), sizeof(char) * 4096);
+	buf = gc_malloc(&(g_ms.gcan), sizeof(char) * 4096);
 	if (buf == NULL)
 		return (1);
 	getcwd(buf, 4096);
 	printf("%s\n", buf);
-	gc_free(&(g_minishell.gcan), (void **)&buf);
+	gc_free(&(g_ms.gcan), (void **)&buf);
 	return (0);
 }
 

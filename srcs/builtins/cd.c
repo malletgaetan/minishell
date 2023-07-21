@@ -20,13 +20,13 @@ void	ft_update_env(void)
 	buf = ms_getenv("PWD");
 	printf("ms_getenv fine\n");
 	i = 0;
-	while (g_minishell.envs[i])
+	while (g_ms.envs[i])
 	{
-		if (ft_strncmp(g_minishell.envs[i], "PWD=", 4))
+		if (ft_strncmp(g_ms.envs[i], "PWD=", 4))
 			break ;
 		i++;
 	}
-	g_minishell.envs[i] = buf;
+	g_ms.envs[i] = buf;
 }
 
 int	cd_builtin(int argc, char **argv)
@@ -38,4 +38,3 @@ int	cd_builtin(int argc, char **argv)
 	ft_update_env();
 	return (0);
 }
-

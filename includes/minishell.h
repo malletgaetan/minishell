@@ -119,7 +119,7 @@ typedef struct s_cmd
 	char	*redirout_file;
 }	t_cmd;
 
-extern t_minishell			g_minishell;
+extern t_minishell			g_ms;
 
 // TODO create exector.h
 void	kill_all_childs(int sig, uint32_t start);
