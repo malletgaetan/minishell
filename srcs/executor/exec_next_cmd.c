@@ -43,7 +43,7 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 		{
 			if (pipe(cmd->pipein))
 				return (HARDFAIL_ERROR);
-			if (fd_manual_pipe(STDIN_FILENO, cmd->pipein[1], (*token)->next->value))
+			if (fd_m_pipe(STDIN_FILENO, cmd->pipein[1], (*token)->next->value))
 				return (HARDFAIL_ERROR);
 			(*token) = (*token)->next;
 		}
@@ -128,7 +128,6 @@ int	close_all_pipes(t_cmd *cmd, int *pipereadfd)
 
 void	init_cmd(t_cmd *cmd)
 {
-
 	ft_memset(cmd, 0, sizeof(t_cmd));
 	cmd->pipeout[0] = -1;
 	cmd->pipeout[1] = -1;
@@ -176,7 +175,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 		return (HARDFAIL_ERROR);
 	if (cmd.redirout_type != 0)
 	{
-		err = pipe_to_file(cmd.pipeout[0], cmd.redirout_file, cmd.redirout_type);
+		err = pipe_tofile(cmd.pipeout[0], cmd.redirout_file, cmd.redirout_type);
 		if (safe_close(cmd.pipeout))
 			return (HARDFAIL_ERROR);
 		cmd.pipeout[0] = 0;
