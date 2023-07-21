@@ -133,8 +133,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 	err = setup_cmd(&cmd, &token);
 	if (err == HARDFAIL_ERROR)
 		return (err);
-	// ignore (cd, export, exit or unset) in pipes
-	if (err == SOFTFAIL_ERROR || is_unpiped_builtin(cmd.args[0]))
+	if (err == SOFTFAIL_ERROR)
 	{
 		if (close_all_pipes(&cmd, &pipereadfd))
 			return (HARDFAIL_ERROR);
@@ -147,8 +146,8 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 	{
 		if (setup_child_pipes(&cmd, token == NULL, &pipereadfd))
 			return (errno); // TODO handle error in waitpid
-		if (is_piped_builtin(cmd.args[0]))
-			return (exec_piped_builtin(cmd.arg_len, cmd.args));
+		if (is_builtin(cmd.args[0]))
+			exec_builtin(cmd.arg_len, cmd.args);
 		path = right_path(cmd.args[0], g_minishell.envs);
 		execve(path, cmd.args, g_minishell.envs);
 		return (errno); // TODO handle error in waitpid

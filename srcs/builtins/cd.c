@@ -18,6 +18,7 @@ void	ft_update_env(void)
 	int		i;
 
 	buf = ms_getenv("PWD");
+	printf("ms_getenv fine\n");
 	i = 0;
 	while (g_minishell.envs[i])
 	{
@@ -25,7 +26,7 @@ void	ft_update_env(void)
 			break ;
 		i++;
 	}
-	gc_free(&(g_minishell.gcenv), (void **)&(g_minishell.envs[i]));
+	// gc_free(&(g_minishell.gcenv), (void **)&(g_minishell.envs[i])); nasty fix
 	g_minishell.envs[i] = buf;
 }
 
@@ -39,14 +40,3 @@ int	cd_builtin(int argc, char **argv)
 	return (0);
 }
 
-/*
-int	main(int argc, char **argv, char **env)
-{
-	char	buf[1000];
-
-	printf("%s\n", getcwd(buf, 1000));
-	cd(argv[1], env);
-	printf("%s\n", getcwd(buf, 1000));
-	return (0);
-}
-*/

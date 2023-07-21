@@ -133,9 +133,9 @@ int		file_to_pipe(char *filefrom, int fdto);
 int		exec_next_cmd(t_token *token, int pipereadfd, int depth);
 int		exec(void);
 int		exec_unpiped_builtin(void);
-int		exec_piped_builtin(int argc, char **argv);
+void	exec_builtin(int argc, char **argv);
 int		is_unpiped_builtin(char *cmd);
-int		is_piped_builtin(char *cmd);
+int		is_builtin(char *cmd);
 
 // signals
 void	sigint(int code);
