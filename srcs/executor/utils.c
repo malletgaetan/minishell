@@ -34,13 +34,13 @@ void	kill_all_childs(int sig, uint32_t start)
 		kill(g_minishell.pids[i++], sig);
 }
 
-int	close_zero(int *fd)
+int	safe_close(int *fd)
 {
-	if (*fd == 0)
+	if (*fd == -1)
 		return (OK);
 	if (close(*fd))
 		return (HARDFAIL_ERROR);
-	*fd = 0;
+	*fd = -1;
 	return (OK);
 }
 

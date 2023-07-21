@@ -21,7 +21,7 @@ int	exec_cmds(void)
 	if (g_minishell.pids == NULL)
 		return (HARDFAIL_ERROR);
 	ft_memset(g_minishell.pids, 0, sizeof(int) * (g_minishell.nb_cmds + 1));
-	err = exec_next_cmd(g_minishell.token, 0, 0);
+	err = exec_next_cmd(g_minishell.token, -1, 0);
 	if (err == HARDFAIL_ERROR)
 		kill_all_childs(SIGKILL, 0);
 	i = 0;

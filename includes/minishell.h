@@ -124,7 +124,8 @@ extern t_minishell			g_minishell;
 // TODO create exector.h
 void	kill_all_childs(int sig, uint32_t start);
 void	wait_all_childs(void);
-int		close_zero(int *fd);
+int		safe_close(int *fd);
+int		is_opened_fd(int fd);
 size_t	get_nb_args(t_token *token);
 int		fd_manual_pipe(int fdfrom, int fdto, char *delim);
 int		pipe_to_file(int fdfrom, char *fileto, int redirtype);

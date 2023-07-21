@@ -18,7 +18,6 @@ void	ft_update_env(void)
 	int		i;
 
 	buf = ms_getenv("PWD");
-	printf("ms_getenv fine\n");
 	i = 0;
 	while (g_minishell.envs[i])
 	{

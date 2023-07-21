@@ -22,3 +22,8 @@ int	is_builtin(char *cmd)
 		return (1);
 	return (is_unpiped_builtin(cmd));
 }
+
+int	is_opened_fd(int fd)
+{
+	return (fd != -1);
+}

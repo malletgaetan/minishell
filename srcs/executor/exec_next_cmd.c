@@ -62,33 +62,33 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 static int	setup_child_pipes(t_cmd *cmd, int is_last_cmd, int *pipereadfd)
 {
 	// attach stdin to read end of file pipe
-	if (cmd->pipein[0] != 0)
+	if (is_opened_fd(cmd->pipein[0]))
 	{
-		if (close_zero(cmd->pipein + 1))
+		if (safe_close(cmd->pipein + 1))
 			return (HARDFAIL_ERROR);
 		if (dup2(cmd->pipein[0], STDIN_FILENO) == -1)
 			return (HARDFAIL_ERROR);
-		if (close_zero(cmd->pipein))
+		if (safe_close(cmd->pipein))
 			return (HARDFAIL_ERROR);
-		if (close_zero(pipereadfd))
+		if (safe_close(pipereadfd))
 			return (HARDFAIL_ERROR);
 	}
 	// attach stdin to read end of old cmd pipe
-	else if (pipereadfd != 0)
+	else if (is_opened_fd(*pipereadfd))
 	{
 		if (dup2(*pipereadfd, STDIN_FILENO) == -1)
 			return (HARDFAIL_ERROR);
-		if (close_zero(pipereadfd))
+		if (safe_close(pipereadfd))
 			return (HARDFAIL_ERROR);
 	}
 	// attach stdout to end of pipe
 	if (!is_last_cmd || (cmd->redirout_type != 0))
 	{
-		if (close_zero(cmd->pipeout))
+		if (safe_close(cmd->pipeout))
 			return (HARDFAIL_ERROR);
 		if (dup2(cmd->pipeout[1], STDOUT_FILENO) == -1)
 			return (HARDFAIL_ERROR);
-		if (close_zero(cmd->pipeout + 1))
+		if (safe_close(cmd->pipeout + 1))
 			return (HARDFAIL_ERROR);
 	}
 	return (OK);
@@ -97,28 +97,38 @@ static int	setup_child_pipes(t_cmd *cmd, int is_last_cmd, int *pipereadfd)
 static int	unsetup_child_pipes(t_cmd *cmd, int *pipereadfd)
 {
 	// close write end of next pipe
-	if (close_zero(cmd->pipeout + 1))
+	if (safe_close(cmd->pipeout + 1))
 		return (HARDFAIL_ERROR);
 	if (cmd->pipein[0])
 	{
-		if (close_zero(cmd->pipein) || close_zero(cmd->pipein + 1))
+		if (safe_close(cmd->pipein) || safe_close(cmd->pipein + 1))
 			return (HARDFAIL_ERROR);
 	}
 	// close read end of prec pipe
-	return (close_zero(pipereadfd));
+	return (safe_close(pipereadfd));
 }
 
 int	close_all_pipes(t_cmd *cmd, int *pipereadfd)
 {
-	if (close_zero(cmd->pipein))
+	if (safe_close(cmd->pipein))
 		return (HARDFAIL_ERROR);
-	if (close_zero(cmd->pipein + 1))
+	if (safe_close(cmd->pipein + 1))
 		return (HARDFAIL_ERROR);
-	if (close_zero(cmd->pipeout))
+	if (safe_close(cmd->pipeout))
 		return (HARDFAIL_ERROR);
-	if (close_zero(cmd->pipeout + 1))
+	if (safe_close(cmd->pipeout + 1))
 		return (HARDFAIL_ERROR);
-	return (close_zero(pipereadfd));
+	return (safe_close(pipereadfd));
+}
+
+void	init_cmd(t_cmd *cmd)
+{
+
+	ft_memset(cmd, 0, sizeof(t_cmd));
+	cmd->pipeout[0] = -1;
+	cmd->pipeout[1] = -1;
+	cmd->pipein[0] = -1;
+	cmd->pipein[1] = -1;
 }
 
 int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
@@ -129,7 +139,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 
 	if (token == NULL)
 		return (OK);
-	ft_memset(&cmd, 0, sizeof(t_cmd));
+	init_cmd(&cmd);
 	err = setup_cmd(&cmd, &token);
 	if (err == HARDFAIL_ERROR)
 		return (err);
@@ -159,7 +169,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 	if (cmd.redirout_type != 0)
 	{
 		err = pipe_to_file(cmd.pipeout[0], cmd.redirout_file, cmd.redirout_type);
-		if (close_zero(cmd.pipeout))
+		if (safe_close(cmd.pipeout))
 			return (HARDFAIL_ERROR);
 		cmd.pipeout[0] = 0;
 		if (err == HARDFAIL_ERROR)
