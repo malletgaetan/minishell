@@ -66,6 +66,8 @@ size_t	get_nb_args(t_token *token)
 
 int	is_unpiped_builtin(char *cmd)
 {
+	if (cmd == NULL)
+		return (0);
 	if (!strcmp(cmd, "cd"))
 		return (1);
 	if (!strcmp(cmd, "export"))

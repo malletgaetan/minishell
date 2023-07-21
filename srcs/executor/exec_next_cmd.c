@@ -27,7 +27,11 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 	while ((*token) && ((*token)->type != PIPE))
 	{
 		if ((*token)->type == WORD)
+		{
+			if (cmd->executable == NULL)
+					cmd->executable = (*token)->value;
 			cmd->args[arg_i++] = (*token)->value;
+		}
 		else if (((*token)->type == D_REDIR_OUT)
 			|| ((*token)->type == S_REDIR_OUT))
 		{
@@ -152,16 +156,19 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 			printf("minishell: %s: %s\n", strerror(errno), cmd.redirout_file);
 		return (exec_next_cmd(token, 0, depth));
 	}
-	g_ms.pids[depth] = fork();
-	if (g_ms.pids[depth] == 0)
+	if (cmd.executable != NULL)
 	{
-		if (setup_child_pipes(&cmd, token == NULL, &pipereadfd))
+		g_ms.pids[depth] = fork();
+		if (g_ms.pids[depth] == 0)
+		{
+			if (setup_child_pipes(&cmd, token == NULL, &pipereadfd))
+				return (errno); // TODO handle error in waitpid
+			if (is_builtin(cmd.args[0]))
+				exec_builtin(cmd.arg_len, cmd.args);
+			path = right_path(cmd.args[0], g_ms.envs);
+			execve(path, cmd.args, g_ms.envs);
 			return (errno); // TODO handle error in waitpid
-		if (is_builtin(cmd.args[0]))
-			exec_builtin(cmd.arg_len, cmd.args);
-		path = right_path(cmd.args[0], g_ms.envs);
-		execve(path, cmd.args, g_ms.envs);
-		return (errno); // TODO handle error in waitpid
+		}
 	}
 	if (g_ms.pids[depth] == -1)
 		return (HARDFAIL_ERROR);

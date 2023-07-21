@@ -111,6 +111,7 @@ typedef struct s_minishell
 
 typedef struct s_cmd
 {
+	char	*executable;
 	char	**args;
 	int		arg_len;
 	int		pipeout[2];
