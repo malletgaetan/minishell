@@ -118,6 +118,7 @@ typedef struct s_cmd
 	int		pipein[2];
 	int		redirout_type;
 	char	*redirout_file;
+	char	*redirin_file;
 }	t_cmd;
 
 extern t_minishell			g_ms;

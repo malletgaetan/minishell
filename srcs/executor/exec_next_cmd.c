@@ -52,9 +52,13 @@ static int	setup_cmd(t_cmd *cmd, t_token **token)
 			if (pipe(cmd->pipein))
 				return (HARDFAIL_ERROR);
 			(*token) = (*token)->next;
-			err = file_to_pipe((*token)->value, cmd->pipein[1]);
+			cmd->redirin_file = (*token)->value;
+			err = file_to_pipe(cmd->redirin_file, cmd->pipein[1]);
 			if (err != OK)
+			{
+				(*token) = (*token)->next;
 				return (err);
+			}
 		}
 		(*token) = (*token)->next;
 	}
@@ -152,7 +156,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 		if (close_all_pipes(&cmd, &pipereadfd))
 			return (HARDFAIL_ERROR);
 		if (err == SOFTFAIL_ERROR)
-			printf("minishell: %s: %s\n", strerror(errno), cmd.redirout_file);
+			printf("minishell: %s: %s\n", strerror(errno), cmd.redirin_file);
 		return (exec_next_cmd(token, 0, depth));
 	}
 	if (cmd.executable != NULL)
