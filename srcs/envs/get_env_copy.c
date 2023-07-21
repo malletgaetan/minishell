@@ -20,7 +20,7 @@ char	*new_shlvl(char *str, int nb)
 	int		j;
 
 	n = ft_itoa(nb);
-	final = gc_malloc(&(g_minishell.gcenv), ft_strlen(str) + ft_strlen(n));
+	final = gc_malloc(&(g_ms.gcenv), ft_strlen(str) + ft_strlen(n));
 	i = -1;
 	while (str[++i])
 		final[i] = str[i];
@@ -37,8 +37,8 @@ int	get_env_copy(char **env)
 	int	i;
 	int	nb;
 
-	g_minishell.envs = gc_malloc(&(g_minishell.gcenv), (get_size(env) + 1) * sizeof(char **));
-	if (g_minishell.envs == NULL)
+	g_ms.envs = gc_malloc(&(g_ms.gcenv), (get_size(env) + 1) * sizeof(char **));
+	if (g_ms.envs == NULL)
 		return (1);
 	i = -1;
 	while (env[++i])
@@ -47,11 +47,11 @@ int	get_env_copy(char **env)
 		{
 			nb = ft_atoi(&env[i][6]);
 			nb++;
-			g_minishell.envs[i] = new_shlvl("SHLVL=", nb);
+			g_ms.envs[i] = new_shlvl("SHLVL=", nb);
 		}
 		else
-			g_minishell.envs[i] = gc_strdup(env[i]);
+			g_ms.envs[i] = gc_strdup(env[i]);
 	}
-	g_minishell.envs[i] = NULL;
+	g_ms.envs[i] = NULL;
 	return (0);
 }

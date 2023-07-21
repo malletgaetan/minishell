@@ -64,7 +64,8 @@ int	copy_with_expansion(char **line, char *word, int old_status)
 	int		in_dquote;
 
 	in_dquote = 0;
-	while ((**line != '\0') && !(!in_dquote && (ft_isoperator(**line) || ft_isspace(**line))))
+	while ((**line != '\0') && !(!in_dquote && (ft_isoperator(**line)
+				|| ft_isspace(**line))))
 	{
 		if (((**line == '\'') && !in_dquote))
 		{

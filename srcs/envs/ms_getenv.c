@@ -21,10 +21,10 @@ char	*ms_getenv(char *envname)
 	if (en_len == 0)
 		return (NULL);
 	i = 0;
-	while (g_minishell.envs[i])
+	while (g_ms.envs[i])
 	{
-		if (!ft_strncmp(envname, g_minishell.envs[i], en_len - 1))
-			return (g_minishell.envs[i] + en_len + 1);
+		if (!ft_strncmp(envname, g_ms.envs[i], en_len - 1))
+			return (g_ms.envs[i] + en_len + 1);
 		++i;
 	}
 	return (NULL);

@@ -16,19 +16,19 @@ int	fd_manual_pipe(int fdfrom, int fdto, char *delim)
 {
 	ssize_t	ret;
 
-	ret = read(fdfrom, g_minishell.buf, BUF_SIZE);
+	ret = read(fdfrom, g_ms.buf, BUF_SIZE);
 	while (ret != 0)
 	{
 		if (ret < 0)
 			return (HARDFAIL_ERROR);
 		if (delim != NULL)
 		{
-			if (!ft_strncmp(g_minishell.buf, delim, (size_t)ret - 1))
+			if (!ft_strncmp(g_ms.buf, delim, (size_t)ret - 1))
 				return (OK);
 		}
-		if (write(fdto, g_minishell.buf, ret) == -1)
+		if (write(fdto, g_ms.buf, ret) == -1)
 			return (HARDFAIL_ERROR);
-		ret = read(fdfrom, g_minishell.buf, BUF_SIZE);
+		ret = read(fdfrom, g_ms.buf, BUF_SIZE);
 	}
 	return (OK);
 }

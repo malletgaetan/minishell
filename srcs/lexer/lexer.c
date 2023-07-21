@@ -21,7 +21,7 @@ int	lex(char *line, t_token **token, t_token **bad_token, int old_status)
 	int		last_type;
 	int		err;
 
-	g_minishell.nb_cmds = 1;
+	g_ms.nb_cmds = 1;
 	ft_skipspaces(&line);
 	if (*line == '|')
 		return (set_bad_token(&line, bad_token));

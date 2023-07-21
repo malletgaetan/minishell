@@ -17,21 +17,21 @@ void	wait_all_childs(void)
 	uint32_t	i;
 
 	i = 0;
-	if (g_minishell.pids == NULL)
+	if (g_ms.pids == NULL)
 		return ;
-	while (g_minishell.pids[i] != 0)
-		waitpid(g_minishell.pids[i++], NULL, 0);
+	while (g_ms.pids[i] != 0)
+		waitpid(g_ms.pids[i++], NULL, 0);
 }
 
 void	kill_all_childs(int sig, uint32_t start)
 {
 	uint32_t	i;
 
-	if (g_minishell.pids == NULL)
+	if (g_ms.pids == NULL)
 		return ;
 	i = start;
-	while (g_minishell.pids[i] != 0)
-		kill(g_minishell.pids[i++], sig);
+	while (g_ms.pids[i] != 0)
+		kill(g_ms.pids[i++], sig);
 }
 
 int	safe_close(int *fd)
@@ -76,4 +76,3 @@ int	is_unpiped_builtin(char *cmd)
 		return (1);
 	return (0);
 }
-

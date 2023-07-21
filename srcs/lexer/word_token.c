@@ -51,7 +51,8 @@ static size_t	get_expanded_size(char *line, int old_status)
 
 	size = 0;
 	in_dquote = 0;
-	while (*line && !(!in_dquote && (ft_isoperator(*line) || ft_isspace(*line))))
+	while (*line && !(!in_dquote && (ft_isoperator(*line)
+				|| ft_isspace(*line))))
 	{
 		if ((*line == '\'') && !in_dquote)
 		{
@@ -77,7 +78,7 @@ int	set_word_token(char **line, t_token **token, int old_status)
 	size_t	word_size;
 
 	word_size = get_expanded_size(*line, old_status);
-	(*token) = gc_malloc(&(g_minishell.gcan), sizeof(t_token) + (sizeof(char) * (word_size + 1)));
+	(*token) = gc_malloc(&(g_ms.gcan), sizeof(t_token) + (1 * (word_size + 1)));
 	(*token)->next = NULL;
 	(*token)->type = WORD;
 	if ((*token) == NULL)

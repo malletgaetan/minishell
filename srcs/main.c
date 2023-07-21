@@ -12,15 +12,15 @@
 
 #include "minishell.h"
 
-t_minishell	g_minishell;
+t_minishell	g_ms;
 
 static int	init_minishell(char **env)
 {
-	g_minishell.bad_token = NULL;
-	g_minishell.token = NULL;
-	g_minishell.old_status = 0;
-	gc_init(&(g_minishell.gcan));
-	gc_init(&(g_minishell.gcenv));
+	g_ms.bad_token = NULL;
+	g_ms.token = NULL;
+	g_ms.old_status = 0;
+	gc_init(&(g_ms.gcan));
+	gc_init(&(g_ms.gcenv));
 	setup_sigactions();
 	if (get_env_copy(env))
 		return (1);
@@ -32,7 +32,10 @@ void	handle_lexer_error(int err)
 	if (err == LEXER_MALLOC_ERROR)
 		printf("minishell: unexpected error\n");
 	else if (err == LEXER_SYNTAX_ERROR)
-		printf("minishell: syntax errror near unexpected token `%s'\n", g_minishell.bad_token->value);
+	{
+		printf("minishell: syntax error");
+		printf(" unexpected token `%s'\n", g_ms.bad_token->value);
+	}
 	else if (err == LEXER_QUOTE_ERROR)
 		printf("minishell: quotes doesn't guard\n");
 }
@@ -41,21 +44,21 @@ static int	interpret(char *line)
 {
 	int	err;
 
-	err = lex(line, &(g_minishell.token), &(g_minishell.bad_token), g_minishell.old_status);
-	if (g_minishell.sigint != 0)
+	err = lex(line, &(g_ms.token), &(g_ms.bad_token), g_ms.old_status);
+	if (g_ms.sigint != 0)
 		return (130);
 	if (err != LEXER_OK)
 	{
 		handle_lexer_error(err);
-		gc_clean(&(g_minishell.gcan));
-		gc_clean(&(g_minishell.gcenv));
+		gc_clean(&(g_ms.gcan));
+		gc_clean(&(g_ms.gcenv));
 		return (2);
 	}
-	if (g_minishell.token == NULL)
+	if (g_ms.token == NULL)
 		return (0);
 	err = exec();
-	gc_clean(&(g_minishell.gcan));
-	gc_clean(&(g_minishell.gcenv));
+	gc_clean(&(g_ms.gcan));
+	gc_clean(&(g_ms.gcenv));
 	if (err != OK)
 	{
 		printf("minishell: hardfail error: %s\n", strerror(errno));
@@ -71,22 +74,22 @@ static int	interpret_loop(void)
 
 	while (42)
 	{
-		g_minishell.sigint = 0;
-		g_minishell.token = NULL;
-		g_minishell.status = STATUS_IDLE;
+		g_ms.sigint = 0;
+		g_ms.token = NULL;
+		g_ms.status = STATUS_IDLE;
 		line = readline("minishell$>");
-		g_minishell.status = STATUS_RUNNING;
+		g_ms.status = STATUS_RUNNING;
 		if (line == NULL)
 			break ;
-		err = lex(line, &(g_minishell.token), &(g_minishell.bad_token), g_minishell.old_status);
+		err = lex(line, &(g_ms.token), &(g_ms.bad_token), g_ms.old_status);
 		if (err != LEXER_OK)
 		{
 			handle_lexer_error(err);
-			gc_clean(&(g_minishell.gcan));
+			gc_clean(&(g_ms.gcan));
 			free(line);
 			continue ;
 		}
-		if (g_minishell.token == NULL)
+		if (g_ms.token == NULL)
 		{
 			free(line);
 			continue ;
@@ -94,15 +97,15 @@ static int	interpret_loop(void)
 		add_history(line);
 		free(line);
 		err = exec();
-		gc_clean(&(g_minishell.gcan));
+		gc_clean(&(g_ms.gcan));
 		if (err != OK)
 		{
 			printf("minishell: hardfail error: %s\n", strerror(errno));
-			gc_clean(&(g_minishell.gcenv));
+			gc_clean(&(g_ms.gcenv));
 			return (1);
 		}
 	}
-	gc_clean(&(g_minishell.gcenv));
+	gc_clean(&(g_ms.gcenv));
 	return (OK);
 }
 
