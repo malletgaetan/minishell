@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	fd_manual_pipe(int fdfrom, int fdto, char *delim)
+int	fd_m_pipe(int fdfrom, int fdto, char *delim)
 {
 	ssize_t	ret;
 
@@ -33,7 +33,7 @@ int	fd_manual_pipe(int fdfrom, int fdto, char *delim)
 	return (OK);
 }
 
-int	pipe_to_file(int fdfrom, char *fileto, int redirtype)
+int	pipe_tofile(int fdfrom, char *fileto, int redirtype)
 {
 	int	fd;
 	int	err;
@@ -49,7 +49,7 @@ int	pipe_to_file(int fdfrom, char *fileto, int redirtype)
 			return (SOFTFAIL_ERROR);
 		return (HARDFAIL_ERROR);
 	}
-	err = fd_manual_pipe(fdfrom, fd, NULL);
+	err = fd_m_pipe(fdfrom, fd, NULL);
 	if (close(fd))
 		return (HARDFAIL_ERROR);
 	return (err);
@@ -69,7 +69,7 @@ int	file_to_pipe(char *filefrom, int fdto)
 			return (SOFTFAIL_ERROR);
 		return (HARDFAIL_ERROR);
 	}
-	err = fd_manual_pipe(fd, fdto, NULL);
+	err = fd_m_pipe(fd, fdto, NULL);
 	if (close(fd))
 		return (HARDFAIL_ERROR);
 	return (err);
