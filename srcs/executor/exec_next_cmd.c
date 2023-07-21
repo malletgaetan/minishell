@@ -139,7 +139,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 		if (close_all_pipes(&cmd, &pipereadfd))
 			return (HARDFAIL_ERROR);
 		if (err == SOFTFAIL_ERROR)
-			printf("minishell: soft error: %s\n", strerror(errno)); // TODO have correct message
+			printf("minishell: %s: %s\n", strerror(errno), cmd.redirout_file);
 		return (exec_next_cmd(token, 0, depth));
 	}
 	g_minishell.pids[depth] = fork();
@@ -170,8 +170,7 @@ int	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 			kill(g_minishell.pids[depth], SIGKILL);
 			if (close_all_pipes(&cmd, &pipereadfd))
 				return (HARDFAIL_ERROR);
-			printf("minishell: soft error: %s\n", strerror(errno)); // TODO have correct message
-			--depth; // TODO fix this ugly sht, made bc don't wait to increment depth if command didn't executed properly
+			printf("minishell: %s: %s\n", strerror(errno), cmd.redirout_file);
 		}
 	}
 	if (token == NULL)
