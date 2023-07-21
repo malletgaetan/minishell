@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	is_piped_builtin(char *cmd)
+int	is_builtin(char *cmd)
 {
 	if (!strcmp(cmd, "echo"))
 		return (1);
@@ -20,5 +20,5 @@ int	is_piped_builtin(char *cmd)
 		return (1);
 	if (!strcmp(cmd, "pwd"))
 		return (1);
-	return (0);
+	return (is_unpiped_builtin(cmd));
 }
