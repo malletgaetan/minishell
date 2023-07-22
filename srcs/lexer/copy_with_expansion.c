@@ -14,11 +14,12 @@
 
 static int	cpy_squote(char **line, char **word)
 {
+	++(*line);
 	while (**line != '\'')
 	{
 		if (**line == '\0')
 			return (LEXER_QUOTE_ERROR);
-		*(++(*word)) = *(++(*line));
+		*((*word)++) = *((*line)++);
 	}
 	++(*line);
 	return (LEXER_OK);
