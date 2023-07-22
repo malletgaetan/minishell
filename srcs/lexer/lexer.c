@@ -12,11 +12,25 @@
 
 #include "minishell.h"
 
-// lexer check for all syntax errors
-// lexer set a stream of token in minishell global
-// lexer does expansion
+int	set_next_token(char **line, t_token **t, t_token **bt, int lt)
+{
+	int	err;
 
-int	lex(char *line, t_token **token, t_token **bad_token, int old_status)
+	if (ft_isoperator(**line))
+	{
+		if (lt != WORD)
+			err = set_bad_token(line, bt);
+		else
+			err = set_operator_token(line, t);
+	}
+	else
+	{
+		err = set_word_token(line, t);
+	}
+	return (err);
+}
+
+int	lex(char *line, t_token **token, t_token **bad_token)
 {
 	int		last_type;
 	int		err;
@@ -31,17 +45,7 @@ int	lex(char *line, t_token **token, t_token **bad_token, int old_status)
 		ft_skipspaces(&line);
 		if (*line == '\0')
 			break ;
-		if (ft_isoperator(*line))
-		{
-			if (last_type != WORD)
-				err = set_bad_token(&line, bad_token);
-			else
-				err = set_operator_token(&line, token);
-		}
-		else
-		{
-			err = set_word_token(&line, token, old_status);
-		}
+		err = set_next_token(&line, token, bad_token, last_type);
 		if (err != 0)
 			return (err);
 		last_type = (*token)->type;

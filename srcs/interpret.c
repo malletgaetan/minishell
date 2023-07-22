@@ -29,7 +29,7 @@ void	interpret(char *line)
 {
 	int	err;
 
-	err = lex(line, &(g_ms.token), &(g_ms.bad_token), g_ms.old_status);
+	err = lex(line, &(g_ms.token), &(g_ms.bad_token));
 	if (g_ms.sigint != 0)
 	{
 		g_ms.old_status = 130;
@@ -76,7 +76,7 @@ static int	local_lex(char *line)
 {
 	int	err;
 
-	err = lex(line, &(g_ms.token), &(g_ms.bad_token), g_ms.old_status);
+	err = lex(line, &(g_ms.token), &(g_ms.bad_token));
 	if (err != LEXER_OK)
 	{
 		handle_lexer_error(err);

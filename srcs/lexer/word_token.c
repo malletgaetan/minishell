@@ -33,18 +33,18 @@ static size_t	get_single_quote_len(char **line)
 	return (size);
 }
 
-static size_t	get_env_size(char **line, int old_status)
+static size_t	get_env_size(char **line)
 {
 	++(*line);
 	if ((**line) == '?')
 	{
 		++(*line);
-		return (get_nb_len(old_status));
+		return (get_nb_len(g_ms.old_status));
 	}
 	return (ft_strlen(get_env_from_line(line)));
 }
 
-static size_t	get_expanded_size(char *line, int old_status)
+static size_t	get_expanded_size(char *line)
 {
 	size_t	size;
 	int		in_dquote;
@@ -61,7 +61,7 @@ static size_t	get_expanded_size(char *line, int old_status)
 		}
 		if (*line == '$' && ft_isenv(*(line + 1)))
 		{
-			size += get_env_size(&line, old_status);
+			size += get_env_size(&line);
 			continue ;
 		}
 		if (*line == '\"')
@@ -73,15 +73,15 @@ static size_t	get_expanded_size(char *line, int old_status)
 	return (size);
 }
 
-int	set_word_token(char **line, t_token **token, int old_status)
+int	set_word_token(char **line, t_token **token)
 {
 	size_t	word_size;
 
-	word_size = get_expanded_size(*line, old_status);
+	word_size = get_expanded_size(*line);
 	(*token) = gc_malloc(&(g_ms.gcan), sizeof(t_token) + (1 * (word_size + 1)));
 	(*token)->next = NULL;
 	(*token)->type = WORD;
 	if ((*token) == NULL)
 		return (LEXER_MALLOC_ERROR);
-	return (copy_with_expansion(line, (*token)->value, old_status));
+	return (copy_with_expansion(line, (*token)->value));
 }

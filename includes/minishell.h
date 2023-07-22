@@ -60,17 +60,18 @@ typedef struct s_token
 	char			value[];
 }	t_token;
 
-int		copy_with_expansion(char **line, char *word, int old_status);
+int		copy_with_expansion(char **line, char *word);
 char	*get_env_from_line(char **line);
 int		set_bad_token(char **line, t_token **token);
 int		set_operator_token(char **line, t_token **token);
-int		set_word_token(char **line, t_token **token, int old_status);
+int		expand(char **line, char **word);
+int		set_word_token(char **line, t_token **token);
 int		ft_isenv(char c);
 int		ft_isspace(char c);
 int		ft_isoperator(char c);
 int		ft_isquote(char c);
 void	ft_skipspaces(char **line);
-int		lex(char *line, t_token **token, t_token **bad_token, int old_status);
+int		lex(char *line, t_token **token, t_token **bad_token);
 size_t	get_nb_len(int nb);
 
 // ==================================
