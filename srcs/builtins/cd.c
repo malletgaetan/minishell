@@ -33,7 +33,7 @@ void	ft_update_env(void)
 int	cd_builtin(int argc, char **argv)
 {
 	int	ret;
-	
+
 	if (argc == 1)
 		return (0);
 	if (opendir(argv[1]) == NULL)
