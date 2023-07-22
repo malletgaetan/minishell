@@ -12,16 +12,21 @@
 
 #include "minishell.h"
 
-int	pwd_builtin(void)
+int	pwd_builtin(char **argv)
 {
 	char	*buf;
 
-	buf = gc_malloc(&(g_ms.gcan), sizeof(char) * 4096);
-	if (buf == NULL)
-		return (1);
-	getcwd(buf, 4096);
-	printf("%s\n", buf);
-	gc_free(&(g_ms.gcan), (void **)&buf);
+	if (argv[1][0] != '\0')
+		printf("pwd: too many arguments\n");
+	else
+	{
+		buf = gc_malloc(&(g_ms.gcan), sizeof(char) * 4096);
+		if (buf == NULL)
+			return (1);
+		getcwd(buf, 4096);
+		printf("%s\n", buf);
+		gc_free(&(g_ms.gcan), (void **)&buf);
+	}
 	return (0);
 }
 

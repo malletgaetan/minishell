@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <sys/types.h>
+#include <dirent.h>
 
 void	ft_update_env(void)
 {
@@ -32,6 +34,13 @@ int	cd_builtin(int argc, char **argv)
 {
 	if (argc == 1)
 		return (0);
+	if (opendir(argv[1]) == NULL)
+	{
+		if (open(argv[1], O_RDONLY) != -1)
+			printf("cd: not a directory: %s\n", argv[1]);
+		else
+			printf("cd: no such file or directory: %s\n", argv[1]);
+	}
 	if (chdir(argv[1]) == -1)
 		return (-1);
 	ft_update_env();
