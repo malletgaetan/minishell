@@ -26,7 +26,6 @@ void	sigint(int code)
 void	sigquit(int code)
 {
 	(void)code;
-	ft_putstr_fd("\b\b  \b\b", STDERR_FILENO);
 }
 
 void	setup_sigaction(t_sigaction *sa, int sig, int flags, void (*h)(int))
