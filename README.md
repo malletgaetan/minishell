@@ -7,4 +7,5 @@ Minimalist shell, only implementing pipes and redirections
 # tested on linux
 make
 ./minishell
+minishell$>
 ```
