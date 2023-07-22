@@ -18,7 +18,7 @@ char	**suppr(char **env, char *argv)
 	int		i;
 	int		j;
 
-	new_env = gc_malloc(&(g_ms.gcenv), get_size((env) + 1) * sizeof(char *));
+	new_env = gc_malloc(&(g_ms.gcenv), (get_size(env)) * sizeof(char *));
 	i = 0;
 	j = 0;
 	while (env[i])
