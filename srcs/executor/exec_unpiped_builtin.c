@@ -47,5 +47,5 @@ void	exec_unpiped_builtin(void)
 	else if (!strcmp(cmd.args[0], "exit"))
 		exit_builtin();
 	else
-		printf("minishell: bug error: didn't recognize cmd\n");
+		print_error("minishell", "internal error", "didn't recognize command");
 }

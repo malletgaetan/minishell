@@ -15,14 +15,19 @@
 static void	handle_lexer_error(int err)
 {
 	if (err == LEXER_MALLOC_ERROR)
-		printf("minishell: unexpected error\n");
+	{
+		ft_putstr_fd("minishell: internal error: ", STDERR_FILENO);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+	}
 	else if (err == LEXER_SYNTAX_ERROR)
 	{
-		printf("minishell: syntax error");
-		printf(" unexpected token `%s'\n", g_ms.bad_token->value);
+		ft_putstr_fd("minishell: syntax error", STDERR_FILENO);
+		ft_putstr_fd(" unexpected token `", STDERR_FILENO);
+		ft_putstr_fd(g_ms.bad_token->value, STDERR_FILENO);
+		ft_putstr_fd("'\n", STDERR_FILENO);
 	}
 	else if (err == LEXER_QUOTE_ERROR)
-		printf("minishell: quotes doesn't guard\n");
+		ft_putstr_fd("minishell: quotes error\n", STDERR_FILENO);
 }
 
 void	interpret(char *line)

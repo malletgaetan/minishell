@@ -32,7 +32,7 @@ void	exec_builtin(int argc, char **argv)
 	else if (!strcmp(argv[0], "pwd"))
 		err = pwd_builtin(argc, argv);
 	else
-		printf("minishell: bug error: didn't recognize cmd\n");
+		print_error("minishell", "internal error", "didn't recognize command");
 	gc_clean(&(g_ms.gcan));
 	gc_clean(&(g_ms.gcenv));
 	if (err)

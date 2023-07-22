@@ -42,7 +42,7 @@ static void	child_execution(t_cmd *cmd, int is_last_cmd, int pipereadfd)
 	execve(path, cmd->args, g_ms.envs);
 	err = errno;
 	if (err == ENOENT)
-		printf("minishell: %s: command not found\n", cmd->executable);
+		print_error("minishell", cmd->executable, "command not found");
 	clean_exit(err);
 }
 
@@ -56,7 +56,7 @@ static void	redirout(t_cmd *cmd, int *pipereadfd, int depth)
 	{
 		kill(g_ms.pids[depth], SIGKILL);
 		close_all_pipes(cmd, pipereadfd);
-		printf("minishell: %s: %s\n", strerror(errno), cmd->redirout_file);
+		print_error("minishell", strerror(errno), cmd->redirout_file);
 	}
 }
 
@@ -70,7 +70,7 @@ void	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 	if (setup_next_cmd(&cmd, &token))
 	{
 		close_all_pipes(&cmd, &pipereadfd);
-		printf("minishell: %s: %s\n", strerror(errno), cmd.redirin_file);
+		print_error("minishell", strerror(errno), cmd.redirin_file);
 		return (exec_next_cmd(token, 0, depth));
 	}
 	if (cmd.executable != NULL)

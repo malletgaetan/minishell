@@ -32,21 +32,26 @@ void	ft_update_env(void)
 
 int	cd_builtin(int argc, char **argv)
 {
-	int	ret;
+	int	fd;
 
 	if (argc == 1)
 		return (0);
 	if (opendir(argv[1]) == NULL)
 	{
-		ret = open(argv[1], O_RDONLY);
-		if (ret != -1)
-			printf("cd: not a directory: %s\n", argv[1]);
-		else
-			printf("cd: no such file or directory: %s\n", argv[1]);
-		close(ret);
+		fd = open(argv[1], O_RDONLY);
+		if (fd == -1)
+		{
+			print_error("cd", strerror(errno), argv[1]);
+			close(fd);
+			return (1);
+		}
+		close(fd);
 	}
 	if (chdir(argv[1]) == -1)
-		return (-1);
+	{
+		print_error("cd", strerror(errno), argv[1]);
+		return (1);
+	}
 	ft_update_env();
 	return (0);
 }

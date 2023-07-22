@@ -126,6 +126,7 @@ extern t_minishell			g_ms;
 // main
 void	interpret(char *line);
 void	interpret_loop(void);
+void	print_error(char *msg_a, char *msg_b, char *msg_c);
 
 // TODO create exector.h
 void	kill_all_childs(int sig);

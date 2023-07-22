@@ -18,7 +18,10 @@ int	pwd_builtin(int argc, char **argv)
 
 	(void)argv;
 	if (argc == 2)
-		printf("pwd: too many arguments\n");
+	{
+		print_error("pwd", "too many arguments", NULL);
+		return (1);
+	}
 	else
 	{
 		buf = gc_malloc(&(g_ms.gcan), sizeof(char) * 4096);
@@ -30,11 +33,3 @@ int	pwd_builtin(int argc, char **argv)
 	}
 	return (0);
 }
-
-/*
-int	main(void)
-{
-	pwd();
-	return (0);
-}
-*/
