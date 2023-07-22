@@ -5,5 +5,4 @@ single quote erreur  exemple : echo ' test $PWD || <test >cat.txt'
 << gerer chaines vides 
 
 Thomas:
-export ne remplace pas les variables si elles existent
 unset segfault a la commande suivante

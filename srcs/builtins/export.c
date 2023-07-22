@@ -44,40 +44,64 @@ int	verif(char *str)
 	return (1);
 }
 
+char	*name(char *str)
+{
+	int		i;
+	int		j;
+	char	*name;
+
+	i = 0;
+	while (str[i] && str[i] != '=')
+		i++;
+	name = malloc((i + 1) * sizeof(char));
+	if (!name)
+		return (NULL);
+	j = -1;
+	while (++j < i)
+		name[j] = str[j];
+	name[j] = '\0';
+	return (name);
+}
+
+int	read_env(char **env, char *n_var)
+{
+	int	i;
+
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(n_var, env[i], ft_strlen(n_var)) == 0)
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
 int	export_builtin(int argc, char **argv)
 {
 	int		i;
+	int		j;
+	char	*n_var;
 	char	**tmp;
 
-	i = 1;
-	while (i < argc)
+	i = 0;
+	while (++i < argc)
 	{
-		if (verif(argv[i]) == 0)
+		n_var = name(argv[i]);
+		j = read_env(g_ms.envs, n_var);
+		if (j >= 0 && verif(argv[i]) == 0)
+		{
+			gc_free(&(g_ms.gcenv), (void **)&(g_ms.envs[j]));
+			g_ms.envs[j] = gc_strdup(argv[i]);
+		}		
+		else if (verif(argv[i]) == 0)
 		{
 			tmp = ft_add(g_ms.envs, argv[i]);
 			if (tmp == NULL)
 				return (1);
 			g_ms.envs = tmp;
 		}
-		i++;
+		free(n_var);
 	}
 	return (0);
 }
-
-/*
-int	main(int argc, char **argv, char **env)
-{
-	char	**new_env;
-	int		i;
-
-	new_env = get_env_copy(new_env, env);
-	new_env = export(new_env, argv);
-	i = 0;
-	while (new_env[i])
-		printf("%s\n", new_env[i++]);
-	i = 0;
-	while (new_env[i])
-		free(new_env[i++]);
-	free(new_env);
-	return (0);
-}*/
