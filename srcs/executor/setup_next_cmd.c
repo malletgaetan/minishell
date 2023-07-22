@@ -15,7 +15,7 @@
 static void	word(t_cmd *cmd, t_token **token, int *i)
 {
 	if (cmd->executable == NULL)
-			cmd->executable = (*token)->value;
+		cmd->executable = (*token)->value;
 	cmd->args[(*i)++] = (*token)->value;
 }
 
