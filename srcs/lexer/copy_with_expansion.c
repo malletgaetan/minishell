@@ -79,7 +79,7 @@ int	copy_with_expansion(char **line, char *word, int old_status)
 			++(*line);
 			continue ;
 		}
-		if (**line == '$' && ft_isenv(*((*line) + 1)))
+		if (**line == '$' && (ft_isenv(*((*line) + 1)) || ((*((*line) + 1) == '?'))))
 		{
 			++(*line);
 			if ((**line) == '?')

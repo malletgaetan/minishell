@@ -14,6 +14,25 @@
 
 t_minishell	g_ms;
 
+void	clean_exit(int err)
+{
+	gc_clean(&(g_ms.gcan));
+	gc_clean(&(g_ms.gcenv));
+	exit(err);
+}
+
+void	hardfail_exit(int lerrno)
+{
+	ft_putstr_fd("minishell: internal error: ", STDERR_FILENO);
+	ft_putstr_fd(strerror(lerrno), STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+	kill_all_childs(SIGKILL, 0);
+	wait_all_childs();
+	gc_clean(&(g_ms.gcan));
+	gc_clean(&(g_ms.gcenv));
+	exit(lerrno);
+}
+
 static int	init_minishell(char **env)
 {
 	g_ms.bad_token = NULL;
@@ -56,14 +75,9 @@ static int	interpret(char *line)
 	}
 	if (g_ms.token == NULL)
 		return (0);
-	err = exec();
+	exec();
 	gc_clean(&(g_ms.gcan));
 	gc_clean(&(g_ms.gcenv));
-	if (err != OK)
-	{
-		printf("minishell: hardfail error: %s\n", strerror(errno));
-		return (1);
-	}
 	return (0);
 }
 
@@ -96,14 +110,8 @@ static int	interpret_loop(void)
 		}
 		add_history(line);
 		free(line);
-		err = exec();
+		exec();
 		gc_clean(&(g_ms.gcan));
-		if (err != OK)
-		{
-			printf("minishell: hardfail error: %s\n", strerror(errno));
-			gc_clean(&(g_ms.gcenv));
-			return (1);
-		}
 	}
 	gc_clean(&(g_ms.gcenv));
 	return (OK);

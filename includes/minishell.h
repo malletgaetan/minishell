@@ -78,7 +78,6 @@ size_t	get_nb_len(int nb);
 enum e_error
 {
 	OK,
-	HARDFAIL_ERROR,
 	SOFTFAIL_ERROR,
 };
 
@@ -126,18 +125,22 @@ extern t_minishell			g_ms;
 // TODO create exector.h
 void	kill_all_childs(int sig, uint32_t start);
 void	wait_all_childs(void);
-int		safe_close(int *fd);
+void	safe_close(int *fd);
+void	safe_pipe(int pids[2]);
+void	safe_dup2(int oldfd, int newfd);
 int		is_opened_fd(int fd);
 size_t	get_nb_args(t_token *token);
-int		fd_m_pipe(int fdfrom, int fdto, char *delim);
+void	fd_m_pipe(int fdfrom, int fdto, char *delim);
 int		pipe_tofile(int fdfrom, char *fileto, int redirtype);
 int		file_to_pipe(char *filefrom, int fdto);
 int		file_to_pipe(char *filefrom, int fdto);
-int		exec_next_cmd(t_token *token, int pipereadfd, int depth);
-int		exec(void);
-int		exec_unpiped_builtin(void);
+void	exec_next_cmd(t_token *token, int pipereadfd, int depth);
+void	exec(void);
+void	exec_unpiped_builtin(void);
 void	exec_builtin(int argc, char **argv);
 int		is_unpiped_builtin(char *cmd);
+void	hardfail_exit(int lerrno);
+void	clean_exit(int err);
 int		is_builtin(char *cmd);
 
 // signals

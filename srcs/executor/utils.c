@@ -19,8 +19,15 @@ void	wait_all_childs(void)
 	i = 0;
 	if (g_ms.pids == NULL)
 		return ;
-	while (g_ms.pids[i] != 0)
-		waitpid(g_ms.pids[i++], NULL, 0);
+	while (i < g_ms.nb_cmds)
+	{
+		if (g_ms.pids[i] == 0)
+		{
+			++i;
+			continue ;
+		}
+		waitpid(g_ms.pids[i++], &(g_ms.old_status), 0);
+	}
 }
 
 void	kill_all_childs(int sig, uint32_t start)
@@ -31,17 +38,15 @@ void	kill_all_childs(int sig, uint32_t start)
 		return ;
 	i = start;
 	while (g_ms.pids[i] != 0)
+	{
+		if (g_ms.pids[i] == 0)
+		{
+			++i;
+			continue ;
+		}
 		kill(g_ms.pids[i++], sig);
-}
+	}
 
-int	safe_close(int *fd)
-{
-	if (*fd == -1)
-		return (OK);
-	if (close(*fd))
-		return (HARDFAIL_ERROR);
-	*fd = -1;
-	return (OK);
 }
 
 size_t	get_nb_args(t_token *token)
