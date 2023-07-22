@@ -12,11 +12,12 @@
 
 #include "minishell.h"
 
-int	pwd_builtin(char **argv)
+int	pwd_builtin(int argc, char **argv)
 {
 	char	*buf;
 
-	if (argv[1][0] != '\0')
+	(void)argv;
+	if (argc == 2)
 		printf("pwd: too many arguments\n");
 	else
 	{
