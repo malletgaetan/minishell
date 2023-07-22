@@ -34,14 +34,9 @@ int	verif(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '=' && ((str[i - 1] >= 'A' && str[i - 1] <= 'Z')
-				|| (str[i - 1] >= 'a' && str[i - 1] <= 'z')))
-			return (0);
+	while (ft_isenv(str[i]))
 		i++;
-	}
-	return (1);
+	return (str[i] == '=');
 }
 
 char	*name(char *str)
@@ -89,12 +84,12 @@ int	export_builtin(int argc, char **argv)
 	{
 		n_var = name(argv[i]);
 		j = read_env(g_ms.envs, n_var);
-		if (j >= 0 && verif(argv[i]) == 0)
+		if (j >= 0 && (verif(argv[i]) == 1))
 		{
 			gc_free(&(g_ms.gcenv), (void **)&(g_ms.envs[j]));
 			g_ms.envs[j] = gc_strdup(argv[i]);
 		}		
-		else if (verif(argv[i]) == 0)
+		else if (verif(argv[i]) == 1)
 		{
 			tmp = ft_add(g_ms.envs, argv[i]);
 			if (tmp == NULL)

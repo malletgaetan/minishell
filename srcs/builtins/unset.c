@@ -27,7 +27,7 @@ char	**suppr(char **env, char *argv)
 			new_env[j++] = env[i];
 		i++;
 	}
-	new_env[i] = 0;
+	new_env[j] = 0;
 	gc_free(&(g_ms.gcenv), (void **)&env);
 	return (new_env);
 }
