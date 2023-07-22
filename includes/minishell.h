@@ -122,6 +122,10 @@ typedef struct s_cmd
 
 extern t_minishell			g_ms;
 
+// main
+void	interpret(char *line);
+void	interpret_loop(void);
+
 // TODO create exector.h
 void	kill_all_childs(int sig, uint32_t start);
 void	wait_all_childs(void);
