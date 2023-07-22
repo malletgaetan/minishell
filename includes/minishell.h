@@ -95,7 +95,7 @@ typedef struct s_minishell
 	int					sigint;
 	int					*pids;
 	int					last_pid;
-	uint32_t			nb_cmds;
+	int					nb_cmds;
 	char				buf[BUF_SIZE];
 	char				**envs;
 	t_token				*token;
@@ -127,7 +127,7 @@ void	interpret(char *line);
 void	interpret_loop(void);
 
 // TODO create exector.h
-void	kill_all_childs(int sig, uint32_t start);
+void	kill_all_childs(int sig);
 void	wait_all_childs(void);
 void	safe_close(int *fd);
 void	safe_pipe(int pids[2]);
@@ -146,6 +146,9 @@ int		is_unpiped_builtin(char *cmd);
 void	hardfail_exit(int lerrno);
 void	clean_exit(int err);
 int		is_builtin(char *cmd);
+int		setup_next_cmd(t_cmd *cmd, t_token **token);
+void	setup_child_pipes(t_cmd *cmd, int is_last_cmd, int *pipereadfd);
+void	unsetup_child_pipes(t_cmd *cmd, int *pipereadfd);
 
 // signals
 void	sigint(int code);

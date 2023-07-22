@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbatteux <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gmallet <gmallet@student.42lehavre.fr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/20 16:42:09 by tbatteux          #+#    #+#             */
-/*   Updated: 2023/07/20 16:42:28 by tbatteux         ###   ########.fr       */
+/*   Updated: 2023/07/22 09:35:56 by gmallet          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	safe_pipe(int pids[2])
 	if (pipe(pids) == -1)
 		hardfail_exit(errno);
 }
-
 
 void	safe_dup2(int oldfd, int newfd)
 {

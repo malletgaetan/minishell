@@ -14,7 +14,7 @@
 
 void	wait_all_childs(void)
 {
-	uint32_t	i;
+	int	i;
 
 	i = 0;
 	if (g_ms.pids == NULL)
@@ -26,17 +26,18 @@ void	wait_all_childs(void)
 			++i;
 			continue ;
 		}
-		waitpid(g_ms.pids[i++], &(g_ms.old_status), 0);
+		waitpid(g_ms.pids[i], &(g_ms.old_status), 0);
+		g_ms.pids[i++] = 0;
 	}
 }
 
-void	kill_all_childs(int sig, uint32_t start)
+void	kill_all_childs(int sig)
 {
-	uint32_t	i;
+	int	i;
 
 	if (g_ms.pids == NULL)
 		return ;
-	i = start;
+	i = 0;
 	while (g_ms.pids[i] != 0)
 	{
 		if (g_ms.pids[i] == 0)
@@ -46,7 +47,6 @@ void	kill_all_childs(int sig, uint32_t start)
 		}
 		kill(g_ms.pids[i++], sig);
 	}
-
 }
 
 size_t	get_nb_args(t_token *token)

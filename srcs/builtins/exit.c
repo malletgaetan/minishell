@@ -14,7 +14,7 @@
 
 void	exit_builtin(void)
 {
-	kill_all_childs(SIGKILL, 0);
+	kill_all_childs(SIGKILL);
 	wait_all_childs();
 	gc_clean(&(g_ms.gcan));
 	gc_clean(&(g_ms.gcenv));
