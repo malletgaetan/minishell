@@ -140,7 +140,7 @@ void	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 			execve(path, cmd.args, g_ms.envs);
 			err = errno;
 			if (err == ENOENT)
-				printf("minishell: %s: %s\n", strerror(err), cmd.executable);
+				printf("minishell: %s: command not found\n", cmd.executable);
 			clean_exit(err);
 		}
 	}

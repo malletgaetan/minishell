@@ -33,6 +33,11 @@ void	hardfail_exit(int lerrno)
 	exit(lerrno);
 }
 
+int event(void)
+{
+	return (0);
+}
+
 static int	init_minishell(char **env)
 {
 	g_ms.bad_token = NULL;
@@ -43,6 +48,7 @@ static int	init_minishell(char **env)
 	setup_sigactions();
 	if (get_env_copy(env))
 		return (1);
+	rl_event_hook = event;
 	return (0);
 }
 
@@ -78,7 +84,7 @@ static int	interpret(char *line)
 	exec();
 	gc_clean(&(g_ms.gcan));
 	gc_clean(&(g_ms.gcenv));
-	return (0);
+	return (WEXITSTATUS(g_ms.old_status));
 }
 
 static int	interpret_loop(void)
@@ -92,6 +98,12 @@ static int	interpret_loop(void)
 		g_ms.token = NULL;
 		g_ms.status = STATUS_IDLE;
 		line = readline("minishell$>");
+		if (g_ms.sigint != 0)
+		{
+			free(line);
+			continue ;
+		}
+
 		g_ms.status = STATUS_RUNNING;
 		if (line == NULL)
 			break ;
@@ -111,6 +123,7 @@ static int	interpret_loop(void)
 		add_history(line);
 		free(line);
 		exec();
+		g_ms.old_status = WEXITSTATUS(g_ms.old_status);
 		gc_clean(&(g_ms.gcan));
 	}
 	gc_clean(&(g_ms.gcenv));

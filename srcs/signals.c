@@ -15,12 +15,12 @@
 void	sigint(int code)
 {
 	(void)code;
+	g_ms.sigint = 1;
 	if (g_ms.status == STATUS_IDLE)
 	{
-		ft_putstr_fd("\nminishell$>", STDERR_FILENO);
+		rl_done = 1;
 		return ;
 	}
-	g_ms.sigint = 1;
 }
 
 void	sigquit(int code)
