@@ -12,6 +12,20 @@
 
 #include "minishell.h"
 
+int	delim_cmp(char *buf, char *delim)
+{
+	while (*delim != '\0')
+	{
+		if (*buf == '\n')
+			return (1);
+		if (*(buf++) != *(delim++))
+			return (1);
+	}
+	return (0);
+}
+
+// should use readline in case of readfile and writing to pipe
+// -> if line is longer than BUF_SIZE, this will not act as intended
 void	fd_m_pipe(int fdfrom, int fdto, char *delim)
 {
 	ssize_t	ret;
@@ -23,7 +37,7 @@ void	fd_m_pipe(int fdfrom, int fdto, char *delim)
 			hardfail_exit(errno);
 		if (delim != NULL)
 		{
-			if (!ft_strncmp(g_ms.buf, delim, (size_t)ret - 1))
+			if (!delim_cmp(g_ms.buf, delim))
 				return ;
 		}
 		if (write(fdto, g_ms.buf, ret) == -1)
