@@ -26,7 +26,8 @@ void	wait_all_childs(void)
 			++i;
 			continue ;
 		}
-		waitpid(g_ms.pids[i], &(g_ms.old_status), 0);
+		if (waitpid(g_ms.pids[i], &(g_ms.old_status), 0) == -1)
+			hardfail_exit(errno);
 		g_ms.pids[i++] = 0;
 	}
 }

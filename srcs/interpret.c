@@ -30,33 +30,6 @@ static void	handle_lexer_error(int err)
 		ft_putstr_fd("minishell: quotes error\n", STDERR_FILENO);
 }
 
-void	interpret(char *line)
-{
-	int	err;
-
-	err = lex(line, &(g_ms.token), &(g_ms.bad_token));
-	if (g_ms.sigint != 0)
-	{
-		g_ms.old_status = 130;
-		return ;
-	}
-	if (err != LEXER_OK)
-	{
-		handle_lexer_error(err);
-		gc_clean(&(g_ms.gcan));
-		gc_clean(&(g_ms.gcenv));
-		g_ms.old_status = 2;
-		return ;
-	}
-	if (g_ms.token == NULL)
-	{
-		g_ms.old_status = 0;
-		return ;
-	}
-	exec();
-	g_ms.old_status = WEXITSTATUS(g_ms.old_status);
-}
-
 static char	*get_next_line(void)
 {
 	char	*line;
@@ -69,6 +42,7 @@ static char	*get_next_line(void)
 		line = readline("minishell$>");
 		if (g_ms.sigint != 0)
 		{
+			g_ms.old_status = 130;
 			free(line);
 			continue ;
 		}
@@ -113,6 +87,8 @@ void	interpret_loop(void)
 		add_history(line);
 		exec();
 		g_ms.old_status = WEXITSTATUS(g_ms.old_status);
+		if (g_ms.sigint != 0)
+			g_ms.old_status = 130;
 	}
 	free(line);
 }

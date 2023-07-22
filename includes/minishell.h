@@ -124,7 +124,6 @@ typedef struct s_cmd
 extern t_minishell			g_ms;
 
 // main
-void	interpret(char *line);
 void	interpret_loop(void);
 void	print_error(char *msg_a, char *msg_b, char *msg_c);
 

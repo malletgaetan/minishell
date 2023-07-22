@@ -37,7 +37,6 @@ void	smart_wait_all_childs(int i)
 	}
 	if (i == g_ms.nb_cmds)
 		return ;
-	kill_all_childs(SIGINT);
 	wait_all_childs();
 }
 

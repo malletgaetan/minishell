@@ -50,15 +50,14 @@ void	print_error(char *msg_a, char *msg_b, char *msg_c)
 
 int	main(int argc, char **argv, char **env)
 {
+	(void)argc;
+	(void)argv;
 	if (init_minishell(env))
 	{
 		print_error("minishell", "internal error", strerror(errno));
 		return (1);
 	}
-	if (argc == 1)
-		interpret_loop();
-	else
-		interpret(argv[1]);
+	interpret_loop();
 	gc_clean(&(g_ms.gcan));
 	gc_clean(&(g_ms.gcenv));
 	return (g_ms.old_status);
