@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-// TODO update it with new env variable array system
-
 static size_t	get_single_quote_len(char **line)
 {
 	size_t	size;
