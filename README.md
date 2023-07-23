@@ -1,5 +1,5 @@
 # ms
-Minimalist shell, only implementing pipes and redirections
+Minimalist shell supporting pipes and redirections
 
 
 ## Usage
