@@ -26,7 +26,5 @@ void	hardfail_exit(int lerrno)
 	ft_putstr_fd("\n", STDERR_FILENO);
 	kill_all_childs(SIGKILL);
 	wait_all_childs();
-	gc_clean(&(g_ms.gcan));
-	gc_clean(&(g_ms.gcenv));
-	exit(lerrno);
+	clean_exit(lerrno);
 }
