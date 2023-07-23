@@ -30,19 +30,30 @@ static void	init_cmd(t_cmd *cmd)
 	cmd->pipein[1] = -1;
 }
 
+// rigth_path should return the executable directly if no good path found.
+// -> add gc.h to libft
 static void	child_execution(t_cmd *cmd, int is_last_cmd, int pipereadfd)
 {
-	char	*path;
+	char	*executable;
+	int		tfree;
 	int		err;
 
 	setup_child_pipes(cmd, is_last_cmd, &pipereadfd);
 	if (is_builtin(cmd->executable))
 		exec_builtin(cmd->arg_len, cmd->args);
-	path = right_path(cmd->executable, g_ms.envs);
-	execve(path, cmd->args, g_ms.envs);
+	executable = right_path(cmd->executable, g_ms.envs);
+	tfree = 1;
+	if (executable == NULL)
+	{
+		executable = cmd->executable;
+		tfree = 0;
+	}
+	execve(executable, cmd->args, g_ms.envs);
 	err = errno;
 	if (err == ENOENT)
 		print_error("minishell", cmd->executable, "command not found");
+	if (tfree != 0)
+		free(executable);
 	clean_exit(err);
 }
 

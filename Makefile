@@ -24,6 +24,7 @@ $(LIBFTDIR)/$(LIBFT):
 
 $(NAME): $(SRCS) $(LIBFTDIR)/$(LIBFT) $(LIBGCDIR)/$(LIBGC)
 	$(CC) $(CFLAGS) $(SRCS) -o $(NAME) $(LIBFTFLAGS) $(LIBGCFLAGS) -lreadline -g
+
 clean:
 	$(RM) $(NAME)
 	find . -name "*.o" -type f -delete
