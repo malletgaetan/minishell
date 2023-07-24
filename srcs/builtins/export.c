@@ -48,7 +48,7 @@ char	*name(char *str)
 	i = 0;
 	while (str[i] && str[i] != '=')
 		i++;
-	name = malloc((i + 1) * sizeof(char));
+	name = gc_malloc(&(g_ms.gcenv), (i + 1) * sizeof(char));
 	if (!name)
 		return (NULL);
 	j = -1;
@@ -79,6 +79,7 @@ int	export_builtin(int argc, char **argv)
 	char	*n_var;
 	char	**tmp;
 
+	print_list(argv[1], g_ms.envs);
 	i = 0;
 	while (++i < argc)
 	{
@@ -96,7 +97,6 @@ int	export_builtin(int argc, char **argv)
 				return (1);
 			g_ms.envs = tmp;
 		}
-		free(n_var);
 	}
 	return (0);
 }

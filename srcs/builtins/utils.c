@@ -12,6 +12,40 @@
 
 #include "minishell.h"
 
+void	ft_swp(char **x, char **y)
+{
+	char	*z;
+
+	z = *x;
+	*x = *y;
+	*y = z;
+}
+
+void	print_list(char *argv, char **env)
+{
+	int	i;
+	int	j;
+
+	if (!argv)
+	{
+		i = 0;
+		while (env[i])
+		{
+			j = i + 1;
+			while (env[j])
+			{
+				if (ft_strncmp(env[i], env[j], 1) > 0)
+					ft_swp(&env[i], &env[j]);
+				j++;
+			}
+			i++;
+		}
+		i = 0;
+		while (env[i])
+			printf("%s\n", env[i++]);
+	}
+}
+
 int	get_size(char **env)
 {
 	int	i;

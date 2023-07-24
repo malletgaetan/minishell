@@ -165,6 +165,7 @@ int		export_builtin(int argc, char **argv);
 int		unset_builtin(int argc, char **argv);
 int		env_builtin(void);
 void	exit_builtin(char **argv);
+void	print_list(char *argv, char **env);
 int		pwd_builtin(int argc, char **argv);
 char	**ft_split_path(const char *s, char c);
 char	*right_path(char *cmd, char **env);
