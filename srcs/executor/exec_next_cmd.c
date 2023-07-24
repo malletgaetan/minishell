@@ -38,10 +38,12 @@ static void	child_execution(t_cmd *cmd, int is_last_cmd, int pipereadfd)
 	int		tfree;
 	int		err;
 
+	executable = NULL;
 	setup_child_pipes(cmd, is_last_cmd, &pipereadfd);
 	if (is_builtin(cmd->executable))
 		exec_builtin(cmd->arg_len, cmd->args);
-	executable = right_path(cmd->executable, g_ms.envs);
+	if (!(*(cmd->executable) == '/' || *(cmd->executable) == '.'))
+		executable = right_path(cmd->executable, g_ms.envs);
 	tfree = 1;
 	if (executable == NULL)
 	{
