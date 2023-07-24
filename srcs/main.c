@@ -52,6 +52,7 @@ int	main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
+	signal(SIGQUIT, SIG_IGN);
 	if (init_minishell(env))
 	{
 		print_error("minishell", "internal error", strerror(errno));

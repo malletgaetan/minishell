@@ -23,11 +23,6 @@ void	sigint(int code)
 	}
 }
 
-void	sigquit(int code)
-{
-	(void)code;
-}
-
 void	setup_sigaction(t_sigaction *sa, int sig, int flags, void (*h)(int))
 {
 	sa->sa_handler = h;
@@ -39,5 +34,4 @@ void	setup_sigaction(t_sigaction *sa, int sig, int flags, void (*h)(int))
 void	setup_sigactions(void)
 {
 	setup_sigaction(&(g_ms.sa_int), SIGINT, SA_RESTART, sigint);
-	setup_sigaction(&(g_ms.sa_quit), SIGQUIT, SA_RESTART, sigquit);
 }
