@@ -28,7 +28,7 @@ void	exec_builtin(int argc, char **argv)
 	else if (!strcmp(argv[0], "unset"))
 		err = unset_builtin(argc, argv);
 	else if (!strcmp(argv[0], "exit"))
-		exit_builtin();
+		exit_builtin(argv);
 	else if (!strcmp(argv[0], "pwd"))
 		err = pwd_builtin(argc, argv);
 	else

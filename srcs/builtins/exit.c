@@ -12,11 +12,23 @@
 
 #include "minishell.h"
 
-void	exit_builtin(void)
+void	exit_builtin(char **argv)
 {
+	int	i;
+
 	kill_all_childs(SIGKILL);
 	wait_all_childs();
 	gc_clean(&(g_ms.gcan));
 	gc_clean(&(g_ms.gcenv));
+	i = 0;
+	if (argv[1])
+	{
+		while (ft_isdigit(argv[1][i]))
+			i++;
+		if (!argv[1][i])
+			exit(ft_atoi(argv[1]));
+		else
+			exit (1);
+	}
 	exit(0);
 }

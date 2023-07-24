@@ -45,7 +45,7 @@ void	exec_unpiped_builtin(void)
 	else if (!strcmp(cmd.args[0], "unset"))
 		g_ms.old_status = unset_builtin(cmd.arg_len, cmd.args);
 	else if (!strcmp(cmd.args[0], "exit"))
-		exit_builtin();
+		exit_builtin(cmd.args);
 	else
 		print_error("minishell", "internal error", "didn't recognize command");
 }

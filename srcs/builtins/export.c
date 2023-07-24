@@ -88,7 +88,7 @@ int	export_builtin(int argc, char **argv)
 		{
 			gc_free(&(g_ms.gcenv), (void **)&(g_ms.envs[j]));
 			g_ms.envs[j] = gc_strdup(argv[i]);
-		}		
+		}
 		else if (verif(argv[i]) == 1)
 		{
 			tmp = ft_add(g_ms.envs, argv[i]);
