@@ -76,12 +76,15 @@ static void	redirout(t_cmd *cmd, int *pipereadfd, int depth)
 void	exec_next_cmd(t_token *token, int pipereadfd, int depth)
 {
 	t_cmd	cmd;
+	int		err;
 
 	if (token == NULL)
 		return ;
 	init_cmd(&cmd);
-	if (setup_next_cmd(&cmd, &token))
+	if ((err = setup_next_cmd(&cmd, &token)))
 	{
+		if (err == INT_ERROR)
+			return ;
 		close_all_pipes(&cmd, &pipereadfd);
 		print_error("minishell", strerror(errno), cmd.redirin_file);
 		return (exec_next_cmd(token, 0, depth));

@@ -26,24 +26,30 @@ int	delim_cmp(char *buf, char *delim)
 
 // should use readline in case of readfile and writing to pipe
 // -> if line is longer than BUF_SIZE, this will not act as intended
-void	fd_m_pipe(int fdfrom, int fdto, char *delim)
+int	fd_m_pipe(int fdfrom, int fdto, char *delim)
 {
 	ssize_t	ret;
 
-	ret = read(fdfrom, g_ms.buf, BUF_SIZE);
-	while (ret != 0)
+	setup_sigaction(&(g_ms.sa_int), SIGINT, 0, sigint);
+	while (1)
 	{
+		ret = read(fdfrom, g_ms.buf, BUF_SIZE);
+		if (g_ms.sigint)
+		{
+			setup_sigaction(&(g_ms.sa_int), SIGINT, SA_RESTART, sigint);
+			return (INT_ERROR);
+		}
 		if (ret < 0)
 			hardfail_exit(errno);
-		if (delim != NULL)
-		{
-			if (!delim_cmp(g_ms.buf, delim))
-				return ;
-		}
+		if (ret == 0)
+			break ;
+		if (delim != NULL && !delim_cmp(g_ms.buf, delim))
+			break ;
 		if (write(fdto, g_ms.buf, ret) == -1)
 			hardfail_exit(errno);
-		ret = read(fdfrom, g_ms.buf, BUF_SIZE);
 	}
+	setup_sigaction(&(g_ms.sa_int), SIGINT, SA_RESTART, sigint);
+	return (0);
 }
 
 int	pipe_tofile(int fdfrom, char *fileto, int redirtype)

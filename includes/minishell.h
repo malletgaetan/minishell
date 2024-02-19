@@ -80,6 +80,7 @@ enum e_error
 {
 	OK,
 	SOFTFAIL_ERROR,
+	INT_ERROR,
 };
 
 enum e_status
@@ -135,7 +136,7 @@ void	safe_pipe(int pids[2]);
 void	safe_dup2(int oldfd, int newfd);
 int		is_opened_fd(int fd);
 size_t	get_nb_args(t_token *token);
-void	fd_m_pipe(int fdfrom, int fdto, char *delim);
+int		fd_m_pipe(int fdfrom, int fdto, char *delim);
 int		pipe_tofile(int fdfrom, char *fileto, int redirtype);
 int		file_to_pipe(char *filefrom, int fdto);
 int		file_to_pipe(char *filefrom, int fdto);

@@ -26,11 +26,13 @@ static void	redirout(t_cmd *cmd, t_token **token)
 	cmd->redirout_file = (*token)->value;
 }
 
-static void	d_redirin(t_cmd *cmd, t_token **token)
+static int d_redirin(t_cmd *cmd, t_token **token)
 {
 	safe_pipe(cmd->pipein);
-	fd_m_pipe(STDIN_FILENO, cmd->pipein[1], (*token)->next->value);
+	if (fd_m_pipe(STDIN_FILENO, cmd->pipein[1], (*token)->next->value))
+		return (INT_ERROR);
 	(*token) = (*token)->next;
+	return (0);
 }
 
 static int	s_redirin(t_cmd *cmd, t_token **token)
@@ -67,7 +69,10 @@ int	setup_next_cmd(t_cmd *cmd, t_token **token)
 			|| ((*token)->type == S_REDIR_OUT))
 			redirout(cmd, token);
 		else if ((*token)->type == D_REDIR_IN)
-			d_redirin(cmd, token);
+		{
+			if (d_redirin(cmd, token))
+				return (INT_ERROR);
+		}
 		else if ((*token)->type == S_REDIR_IN && s_redirin(cmd, token))
 			return (SOFTFAIL_ERROR);
 		(*token) = (*token)->next;
