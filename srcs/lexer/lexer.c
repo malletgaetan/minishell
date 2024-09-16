@@ -57,7 +57,7 @@ int	lex(char *line, t_token **token, t_token **bad_token)
 		last_type = (*token)->type;
 		token = &((*token)->next);
 	}
-	if (last_type != WORD)
+	if (last_type != WORD && last_type != -1)
 		return (set_bad_token(&line, bad_token));
 	return (LEXER_OK);
 }

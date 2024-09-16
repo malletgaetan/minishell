@@ -14,22 +14,12 @@
 
 int	pwd_builtin(int argc, char **argv)
 {
-	char	*buf;
+	char	buf[PATH_MAX];
 
 	(void)argv;
 	if (argc == 2)
-	{
-		print_error("pwd", "too many arguments", NULL);
-		return (1);
-	}
-	else
-	{
-		buf = gc_malloc(&(g_ms.gcan), sizeof(char) * 4096);
-		if (buf == NULL)
-			return (1);
-		getcwd(buf, 4096);
-		printf("%s\n", buf);
-		gc_free(&(g_ms.gcan), (void **)&buf);
-	}
+		return (print_error("pwd", "too many arguments", NULL));
+	getcwd(buf, sizeof(buf));
+	printf("%s\n", buf);
 	return (0);
 }

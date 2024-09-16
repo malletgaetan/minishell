@@ -33,13 +33,17 @@ static size_t	get_single_quote_len(char **line)
 
 static size_t	get_env_size(char **line)
 {
+	char	*env;
 	++(*line);
 	if ((**line) == '?')
 	{
 		++(*line);
 		return (get_nb_len(g_ms.old_status));
 	}
-	return (ft_strlen(get_env_from_line(line)));
+	env = get_env_from_line(line);
+	if (env == NULL)
+		return (0);
+	return (ft_strlen(env));
 }
 
 static size_t	get_expanded_size(char *line)

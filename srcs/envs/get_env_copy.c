@@ -50,7 +50,11 @@ int	get_env_copy(char **env)
 			g_ms.envs[i] = new_shlvl("SHLVL=", nb);
 		}
 		else
+		{
+			if (ft_strchr(env[i], '=') == NULL)
+				return (1);
 			g_ms.envs[i] = gc_strdup(env[i]);
+		}
 	}
 	g_ms.envs[i] = NULL;
 	return (0);

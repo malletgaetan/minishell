@@ -43,21 +43,3 @@ int	unset_builtin(int argc, char **argv)
 		g_ms.envs = suppr(g_ms.envs, argv[i++]);
 	return (0);
 }
-
-/*
-int	main(int argc, char **argv, char **env)
-{
-	char	**new_env;
-	int		i;
-
-	new_env = get_env_copy(new_env, env);
-	new_env = unset(new_env, argv);
-	i = 0;
-	while (new_env[i])
-		printf("%s\n", new_env[i++]);
-	i = 0;
-	while (new_env[i])
-		free(new_env[i++]);
-	free(new_env);
-	return (0);
-}*/

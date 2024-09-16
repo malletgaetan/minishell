@@ -24,7 +24,7 @@ char	*ms_getenv(char *envname)
 	while (g_ms.envs[i])
 	{
 		if (!ft_strncmp(envname, g_ms.envs[i], en_len - 1))
-			return (g_ms.envs[i] + en_len + 1);
+			return (ft_strchr(g_ms.envs[i], '=') + 1);
 		++i;
 	}
 	return (NULL);

@@ -36,13 +36,12 @@ static uint32_t	cpy_old_status(char *str)
 	return ((atoi_buf(str, g_ms.old_status)));
 }
 
-static int	cpy_env(char *env, char **word)
+static void	cpy_env(char *env, char **word)
 {
 	if (env == NULL)
-		return (1);
+		return ;
 	while (*env)
 		*((*word)++) = *(env++);
-	return (OK);
 }
 
 int	expand(char **line, char **word)
@@ -57,7 +56,6 @@ int	expand(char **line, char **word)
 		(*word) += cpy_old_status(*word);
 		return (1);
 	}
-	if (!(cpy_env(get_env_from_line(line), word)))
-		return (1);
-	return (0);
+	cpy_env(get_env_from_line(line), word);
+	return (1);
 }

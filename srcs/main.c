@@ -33,7 +33,7 @@ static int	init_minishell(char **env)
 	return (0);
 }
 
-void	print_error(char *msg_a, char *msg_b, char *msg_c)
+int	print_error(char *msg_a, char *msg_b, char *msg_c)
 {
 	ft_putstr_fd(msg_a, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
@@ -41,11 +41,12 @@ void	print_error(char *msg_a, char *msg_b, char *msg_c)
 	if (msg_c == NULL)
 	{
 		ft_putstr_fd("\n", STDERR_FILENO);
-		return ;
+		return (1);
 	}
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd(msg_c, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
+	return (1);
 }
 
 int	main(int argc, char **argv, char **env)

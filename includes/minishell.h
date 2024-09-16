@@ -29,6 +29,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <stdint.h>
+# include <linux/limits.h>
 # include "libft.h"
 # include "gc.h"
 
@@ -126,7 +127,7 @@ extern t_minishell			g_ms;
 
 // main
 void	interpret_loop(void);
-void	print_error(char *msg_a, char *msg_b, char *msg_c);
+int		print_error(char *msg_a, char *msg_b, char *msg_c);
 
 // TODO create exector.h
 void	kill_all_childs(int sig);
